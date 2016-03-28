@@ -6,6 +6,15 @@ import os
 import sys
 import time
 import subprocess
+from paver.easy import *
+from os.path import islink, isfile,join,basename,dirname,exists,relpath
+from paver.setuputils import setup
+try:
+    from paver.virtual import bootstrap, virtualenv
+except ImportError, e:
+    info(
+        "VirtualEnv must be installed to enable 'paver bootstrap'. If you need this command, run: pip install virtualenv"
+    )
 
 # Import parameters from the setup file.
 sys.path.append('.')
@@ -17,11 +26,32 @@ from setup import (
 from paver.easy import options, task, needs, consume_args
 from paver.setuputils import install_distutils_tasks
 
-options(setup=setup_dict)
+options(setup=setup_dict,
+        star=Bunch(
+        sdir=path('raslpipe/download'),
+        bindir=path('raslpipe/bin')
+        ),
+        virtualenv=Bunch(
+        packages_to_install=[],
+        no_site_packages=True)
+        )
+
 
 install_distutils_tasks()
 
 ## Miscellaneous helper functions
+
+@task
+def download_compile_star(options):
+    """installs the current package"""
+    starbin=join(sys.prefix,'bin','STAR')
+    if not exists(starbin):
+        info("Compiling STAR...")
+        currwd = os.getcwd()
+        sdir = path(currwd) / options.star.sdir
+        bdir = path(currwd) / options.star.bindir
+        sh('(cd %s; wget https://github.com/alexdobin/STAR/archive/2.5.1b.tar.gz -O- | tar xzf -; cd STAR-2.5.1b; make; cp bin/Linux_x86_64/* %s; cd %s)' % (sdir, bdir, sdir))
+
 
 
 def print_passed():
@@ -85,6 +115,37 @@ def _doc_make(*make_args):
 
 
 ## Tasks
+
+@task
+@needs('install_python_dependencies','install_other_dependencies')
+def install_dependencies():
+    pass
+
+@task
+@needs('download_compile_star')
+def install_other_dependencies():
+    pass
+
+@task
+def install_python_dependencies():
+    sh('pip install -r requirements-dev.txt --cache-dir raslpipe/download/.pip_cache')
+
+@task
+@needs('install_dependencies')
+def prepare():
+    """Prepare complete environment
+    """
+    pass
+
+@task
+@needs('prepare','setuptools.command.install')
+def install():
+    pass
+
+@task
+@needs('install')
+def develop():
+    pass
 
 @task
 @needs('doc_html', 'setuptools.command.sdist')

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+from ez_setup import use_setuptools
+use_setuptools()
 
 import os
 import sys
 import imp
 import subprocess
+from glob import glob
 
 ## Python 2.6 subprocess.check_output compatibility. Thanks Greg Hewgill!
 if 'check_output' not in dir(subprocess):
@@ -266,18 +269,42 @@ setup_dict = dict(
     zip_safe=False,  # don't use eggs
     entry_points={
         'console_scripts': [
-            'raslpipe_cli = raslpipe.main:entry_point'
+            'raslpipe_cli = raslpipe.main:main'
         ],
         # if you have a gui, use this
         # 'gui_scripts': [
         #     'raslpipe_gui = raslpipe.gui:entry_point'
         # ]
+    },
+    # These all get copied to our installation's bin folder for us
+    scripts = [
+        'raslpipe/download/STAR-2.5.1b/bin/Linux_x86_64/STAR',
+    ] + glob('raslpipe/download/STAR-2.5.1b/bin/Linux_x86_64/*'),
+    package_data = {
+        'raslpipe': ['files/*'],
+
     }
 )
 
+def runTasks():
+    """run paver tasks"""
+    cmd = "paver prepare"
+    return subprocess.Popen(cmd, shell=True).communicate()
 
 def main():
-    setup(**setup_dict)
+    #setup(**setup_dict)
+    import os
+    try:
+        import paver.tasks
+    except ImportError:
+        if os.path.exists("paver-minilib.zip"):
+            import sys
+            sys.path.insert(0, "paver-minilib.zip")
+        else:
+            raise ValueError("No paver in the path")
+        import paver.tasks
+    paver.tasks.main()
+    runTasks()
 
 
 if __name__ == '__main__':
