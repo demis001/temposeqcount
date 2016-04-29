@@ -30,3 +30,7 @@ termcolor
 bunch==1.0.1
 python-dateutil
 matplotlib
+pandas
+tabulate
+biopython
+pysam

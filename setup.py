@@ -278,8 +278,9 @@ setup_dict = dict(
     },
     # These all get copied to our installation's bin folder for us
     scripts = [
-        'raslpipe/download/STAR-2.5.1b/bin/Linux_x86_64/STAR',
-    ] + glob('raslpipe/download/STAR-2.5.1b/bin/Linux_x86_64/*'),
+        'raslpipe/lib/fastx_toolkit/bin/fastq_masker',
+        'raslpipe/download/seqtk/seqtk',
+    ] + glob('raslpipe/lib/fastx_toolkit/bin/fast*'),
     package_data = {
         'raslpipe': ['files/*'],
 
