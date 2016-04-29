@@ -7,7 +7,7 @@ import sys
 import time
 import subprocess
 from paver.easy import *
-from os.path import islink, isfile,join,basename,dirname,exists,relpath
+from os.path import islink, isfile,join,basename,dirname,exists,relpath,abspath
 from paver.setuputils import setup
 try:
     from paver.virtual import bootstrap, virtualenv
@@ -31,15 +31,85 @@ options(setup=setup_dict,
         sdir=path('raslpipe/download'),
         bindir=path('raslpipe/bin')
         ),
+         FastQC=Bunch(
+            url='http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip',
+            downloads=path('raslpipe/download'),
+            installdir=join(sys.prefix,'lib')
+        ),
+        fastx_lib=Bunch(
+            url='https://github.com/agordon/libgtextutils/releases/download/0.7/libgtextutils-0.7.tar.gz',
+            downloads=path('raslpipe/download'),
+            installdir=join(sys.prefix, 'lib', 'libgtextutils')
+        ),
+        fastx=Bunch(
+            url='https://github.com/agordon/fastx_toolkit/releases/download/0.0.14/fastx_toolkit-0.0.14.tar.bz2',
+            downloads=path('raslpipe/download'),
+            installdir=join(sys.prefix, 'lib', 'fastx_toolkit')
+
+        ),
+        ngsutils=Bunch(
+            url='https://github.com/ngsutils/ngsutils/archive/ngsutils-0.5.7.tar.gz',
+            downloads=path('raslpipe/download'),
+
+        ),
+        auto_barcode=Bunch(
+            url='https://github.com/mfcovington/auto_barcode/archive/2.1.2.tar.gz',
+            downloads=path('raslpipe/download')
+
+        ),
+        R=Bunch(
+            url='https://cran.r-project.org/src/base/R-3/R-3.2.3.tar.gz',
+            downloads=path('raslpipe/download'),
+            installdir=join(sys.prefix, 'lib', "R-3.2.3")
+
+        ),
+        rpy2=Bunch(
+            url='https://pypi.python.org/packages/source/r/rpy2/rpy2-2.7.8.tar.gz',
+            downloads=path('raslpipe/download')
+
+        ),
+        seqtk=Bunch(
+            url='https://github.com/lh3/seqtk.git',
+            downloads=path('raslpipe/download')
+
+        ),
+        environ=Bunch(
+            installdir=path('raslpipe/lib')
+
+        ),
+          settings=Bunch(
+            shell_file=path('raslpipe/files/settings.sh')
+        ),
+
         virtualenv=Bunch(
         packages_to_install=[],
         no_site_packages=True)
         )
 
+INSTRUICTIONS = """
+Run
+    $ source raslpipe/bin/activate
+to enter the virtual environment and
+    $ deactivate
+to exit the environment.
+
+"""
 
 install_distutils_tasks()
 
 ## Miscellaneous helper functions
+
+
+@task
+def bootstrap(options):
+    """Create virtualenv in ./bootstrap"""
+    try:
+        import virtualenv
+    except ImportError, e:
+        raise RuntimeError("Virtualenv is needed for bootstrap")
+    options.virtualenv.no_site_packages=False
+    options.bootstrap.no_site_packages=False
+    call_task("paver.virtualenv.boostrap")
 
 @task
 def download_compile_star(options):
@@ -50,9 +120,176 @@ def download_compile_star(options):
         currwd = os.getcwd()
         sdir = path(currwd) / options.star.sdir
         bdir = path(currwd) / options.star.bindir
-        sh('(cd %s; wget https://github.com/alexdobin/STAR/archive/2.5.1b.tar.gz -O- | tar xzf -; cd STAR-2.5.1b; make; cp bin/Linux_x86_64/* %s; cd %s)' % (sdir, bdir, sdir))
+        dist = join(sys.prefix, 'bin', 'STAR')
+        if not islink(dist):
+            sh('(cd %s; wget https://github.com/alexdobin/STAR/archive/2.5.1b.tar.gz -O- | tar xzf -; cd STAR-2.5.1b; make; ln -s source/STAR %s; cd %s)' % (sdir, bdir, sdir))
+
+@task
+def download_compile_seqtk(options):
+    """Download and compile seqtk"""
+    appbin=join(sys.prefix, 'bin', 'seqtk')
+    srcdir = join(options.seqtk.downloads, "seqtk")
+    if not exists(appbin):
+        if exists(srcdir):
+            lbcmd = 'cd %s && cd seqtk && make' %(options.seqtk.downloads)
+            sh(lbcmd)
+        else:
+            lbcmd = 'cd %s && git clone %s  && cd seqtk && make' %(options.seqtk.downloads, options.seqtk.url)
+            sh(lbcmd)
 
 
+@task
+def install_fastax_lib(options):
+    """Install lib required for fastx"""
+    info("Installing lib required for fastx ..." )
+    installdir = abspath(options.fastx_lib.installdir)
+    if not exists(installdir):
+        lbcmd = 'cd %s   && wget %s && tar -xvf libgtextutils-0.7.tar.gz  && cd libgtextutils-0.7 && ./configure --prefix=%s && make &&  make install' %(options.fastx_lib.downloads, options.fastx_lib.url, installdir)
+        sh(lbcmd)
+
+@task
+def install_fastx(options):
+    """Install fastx toolkit ..."""
+    info("Installing fastx toolkit ...")
+    installdir = abspath(options.fastx.installdir)
+    libdir = abspath(options.fastx_lib.installdir)
+    if not exists(installdir):
+        lbcmd = 'cd %s && wget %s && tar -xjvf fastx_toolkit-0.0.14.tar.bz2  && cd fastx_toolkit-0.0.14 && export PKG_CONFIG_PATH=%s/lib/pkgconfig:$PKG_CONFIG_PATH && ./configure --prefix=%s && make && make install' %(options.fastx.downloads, options.fastx.url,libdir, installdir)
+        sh(lbcmd)
+
+@task
+def install_ngsutils(options):
+    """Install ngsutils ..."""
+    info ("Installing ngsutils ...")
+    installdir = abspath(options.ngsutils.installdir)
+    srcdir = abspath(options.ngsutils.installdir)
+    if not exists(installdir):
+        lbcmd = 'cd %s && wget %s && tar -xvf ngsutils-0.5.7.tar.gz && cd ngsutils-ngsutils-0.5.7 && make' %(options.ngsutils.downloads, options.ngsutils.url)
+        sh(lbcmd)
+
+@task
+def install_R(options):
+    """Install R64 ..."""
+    info("Installing R ...")
+    installdir=abspath(options.R.installdir)
+    dist = join(sys.prefix, 'bin', "R")
+    src = join(options.R.installdir, "bin", "R")
+    if not exists(dist):
+        lbcmd = 'cd %s && wget %s && tar -xvf R-3.2.3.tar.gz && cd R-3.2.3 && ./configure --enable-R-shlib --prefix=%s && make && make install ' %(options.R.downloads, options.R.url, installdir)
+        sh(lbcmd)
+        # make symbolic link to the bin dir
+        os.symlink(src, dist)
+        os.chmod(dist, 0755)
+@task
+def setenviron(options):
+    """Setup environment varaible"""
+    src = options.environ.installdir
+    rldpath = os.path.join(src, "R-3.2.3", "lib64", "R", "lib")
+    if 'LD_LIBRARY_PATH' not in os.environ:
+        os.environ['LD_LIBRARY_PATH']= rldpath
+    else:
+        os.environ['LD_LIBRARY_PATH']+=  rldpath
+
+
+@task
+def install_rpy2(options):
+    """Install rpy2 python package"""
+    info("Install rpy2 python package, require dependencies ...")
+    #rhome=join(sys.prefix, "lib", "R-2.12", "lib64", "R", "lib")
+    rinclude=join(sys.prefix, "lib", "R-3.2.3", "lib64", "R", "include")
+    dist = join(sys.prefix, 'download', 'rpy2-2.7.8')
+    if not exists(dist):
+        lbcmd = 'cd %s && wget %s && tar -xvf rpy2-2.7.8.tar.gz && cd rpy2-2.7.8 && export CFLAGS="-I%s" && python setup.py build  install ' %(options.rpy2.downloads, options.rpy2.url, rinclude)
+        sh(lbcmd)
+    else:
+        lbcmd = 'cd %s  && export CFLAGS="-I%s" && python setup.py build  install ' %(dist,rinclude)
+        sh(lbcmd)
+
+#export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/data/jimaprogramming/python/raslpipe/raslpipe/lib/R-3.2.3/lib64/R/lib/
+
+@task
+def insallRpackages(options):
+    """Install R packages that cannot be installed using pip install ..."""
+    #from rpy2.robjects.packages import importr
+    src = join(sys.prefix, "lib", "R-3.2.3", "lib64", "R", "lib")
+    spe = "$"
+    cmd = 'export LD_LIBRARY_PATH=%sLD_LIBRARY_PATH:%s' %(spe,src)
+    sh(cmd)
+    import rpy2.robjects as robjects
+    import rpy2.robjects.packages as rpackages
+    from rpy2.robjects.vectors import StrVector
+    packageNames = ('ggplot2')
+
+    if all(rpackages.isinstalled(x) for x in packageNames):
+
+        have_packages = True
+
+    else:
+
+        have_packages = False
+
+    if not have_packages:
+
+         #utils = rpackages.importr('utils')
+         #utils.chooseCRANmirror(ind=1, useHTTPS=False)
+         packnames_to_install = [x for x in packageNames if not rpackages.isinstalled(x)]
+        # if len(packnames_to_install) > 0:
+         #    utils.install_packages(StrVector(packnames_to_install))
+         if len(packnames_to_install) > 0:
+             # install biocondcutor package
+            base = rpackages.importr('base')
+            base.source("http://www.bioconductor.org/biocLite.R")
+            biocinstaller = rpackages.importr("BiocInstaller")
+            biocinstaller.biocLite("ggplot2", suppressUpdates=True)
+
+@task
+def download_install_fastqc(options):
+    import zipfile
+    from glob import glob
+    dlpath = join(options.FastQC.downloads,'fastqc_v*.zip')
+    fastqczip = glob(dlpath)
+    # No need to redownload
+    if not len(fastqczip):
+        info("Downloading FastQC from %s" % options.FastQC.url)
+        dlcmd = 'cd %s && [ ! -e fastqc*.zip ] && wget %s' % (options.FastQC.downloads,options.FastQC.url)
+        sh(dlcmd)
+    else:
+        info("FastQC Already downloaded")
+    fastqczip = glob(dlpath)
+    fqcdir = join(options.FastQC.installdir,'FastQC')
+    # Check to see if it is extracted already
+    if not exists(fqcdir):
+        info("Unpacking FastQC")
+        zfh = zipfile.ZipFile(fastqczip[-1])
+        zfh.extractall(options.FastQC.installdir)
+        zfh.close()
+    else:
+        info("FastQC already unpacked")
+    # Make symlink to bin
+    src = relpath(join(fqcdir,'fastqc'),join(sys.prefix,'bin'))
+    dst = join(sys.prefix,'bin','fastqc')
+    if not exists(dst):
+        info("Installing fastqc symlink")
+        os.symlink(src,dst)
+        os.chmod(dst, 0755)
+    else:
+        info("fastqc symlink already exists")
+
+@task
+def set_ld_path(options):
+    """Create setting.sh file and source it"""
+    src = options.settings.shell_file
+    if exists(src):
+        next
+    else:
+        with open(src, 'w') as myfile:
+            installdir = sys.prefix
+            rldpath = os.path.join(installdir, "lib", "R-3.2.3", "lib64","R", "lib")
+            sep ="$"
+            ldpath = "export LD_LIBRARY_PATH=%sLD_LIBRARY_PATH:%s\n"%(sep, rldpath)
+            myfile.write(ldpath)
+    info(src)
+    sh('source %s' %(src))
 
 def print_passed():
     # generated on http://patorjk.com/software/taag/#p=display&f=Small&t=PASSED
@@ -116,19 +353,32 @@ def _doc_make(*make_args):
 
 ## Tasks
 
+
 @task
-@needs('install_python_dependencies','install_other_dependencies')
+def init():
+    """Initializing everything so you can start working"""
+    info ("virtual environment successfully bootstrapped.")
+    info (INSTRUICTIONS)
+
+@task
+@needs('install_python_dependencies','install_other_dependencies', 'install_python_dependencies_nodeps')
 def install_dependencies():
     pass
 
 @task
-@needs('download_compile_star')
+@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','install_fastax_lib', 'install_fastx', 'install_R','setenviron', 'install_rpy2', 'insallRpackages', 'set_ld_path')
+
 def install_other_dependencies():
     pass
 
 @task
 def install_python_dependencies():
-    sh('pip install -r requirements-dev.txt --cache-dir raslpipe/download/.pip_cache')
+    sh('pip install -r requirements-dev.txt  --download-cache raslpipe/download/.pip_cache')
+
+@task
+def install_python_dependencies_nodeps():
+    """Install python package without installing dependencies"""
+    sh('pip install -r requirements_nodeps.txt  --download-cache raslpipe/download/.pip_cache')
 
 @task
 @needs('install_dependencies')
@@ -148,7 +398,7 @@ def develop():
     pass
 
 @task
-@needs('doc_html', 'setuptools.command.sdist')
+@needs('prepare','doc_html', 'setuptools.command.sdist')
 def sdist():
     """Build the HTML docs and the tarball."""
     pass

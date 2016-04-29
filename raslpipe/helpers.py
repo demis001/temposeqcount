@@ -9,6 +9,16 @@ import StringIO
 from ruffus.proxy_logger import *
 from ruffus import *
 
+from collections import Counter
+#from pandas import DataFrame
+#from rpy2 import robjects
+#import rpy2
+#from rpy2.robjects import pandas2ri
+#from rpy2.robjects.lib import ggplot2
+#from rpy2.robjects.packages import importr
+#from tabulate import tabulate
+#grdevices = importr('grDevices')
+#pandas2ri.activate()
 
 class Result(object):
     def __init__(self, infiles, outfiles, log=None, stdout=None, stderr=None,
@@ -214,9 +224,34 @@ def get_options():
     )
     parser.add_argument(
         '-w',
-        '--plate_wall_bc',
+        '--plate_well_bc',
         required = True,
         help = "Specifies a tab delemeted file of the input plate and well barcode file containing  the following columns: PlateBarcode and WellBarcode"
+    )
+    parser.add_argument(
+        '-c',
+        '--cpuNum',
+        dest="cpuNum",
+        default= 4,
+        type=int,
+        help = "Number of CPU to use [DEFAULT: %(default)s]"
+    )
+    parser.add_argument(
+        '-l',
+        '--trimleft',
+        dest="trimleft",
+        required = True,
+        type=int,
+        help = "Length of sequence  to trim from the 3' end, length of well bacode + adaptor 1 (AD1)"
+
+    )
+    parser.add_argument(
+        '-r',
+        '--trimright',
+        dest='trimright',
+        required =True,
+        type = int,
+        help = "lenght of sequence to trim from the 5' end, length of plate barcode + Adaptor 2 (AD2)"
     )
     return parser.parse_args()
 
@@ -238,6 +273,16 @@ def get_options():
                          helpstr))
     check_mandatory_options(options, mandatory_options, helpstr)
     return options
+
+def setup_shell_environment():
+    """Set all the shell variables using config value"""
+    installdir = sys.prefix
+    rldpath = os.path.join(installdir, "lib", "R-3.2.3", "lib64","R", "lib")
+    if 'LD_LIBRARY_PATH' not in os.environ:
+        os.environ['LD_LIBRARY_PATH'] = rldpath
+    else:
+        os.environ['LD_LIBRARY_PATH'] += rldpath
+
 
 
 def isGzip(input):
@@ -299,6 +344,40 @@ def which(program):
                     return exe_file
 
     return None
+
+
+#def plot_summary(barcodes_obs, barcode_table, directory, expt_id):
+    #"""Plot barcode split stat
+    #TODO: Modify this function to fit for my purpose
+    #"""
+    #barcodes, counts, matches = get_vectors(barcodes_obs, barcode_table)
+    #df = DataFrame({'barcode': barcodes,
+                    #'count': counts,
+                    #'matched': matches})
+    #p = ggplot2.ggplot(df) + \
+        #ggplot2.aes_string(x='factor(matched)', y='count / 1000000') + \
+        #ggplot2.geom_boxplot(outlier_size = 0) + \
+        #ggplot2.geom_jitter() + \
+        #ggplot2.ggtitle(label = expt_id) + \
+        #ggplot2.ggplot2.xlab(label = "") + \
+        #ggplot2.scale_y_continuous(name = "Count\n(million reads)")
+
+    #filename = "{0}/{1}.png".format(directory, expt_id)
+    #grdevices.png(filename=filename, width=4, height=5, unit='in', res=300)
+    #p.plot()
+    #grdevices.dev_off()
+
+#def get_vectors(barcodes_obs, barcode_table):
+    #""" Utility function for plot_summary function"""
+    #barcodes = []
+    #counts = []
+    #matches = []
+    #for barcode in dict.keys(barcodes_obs):
+        #barcodes.append(barcode)
+        #counts.append(barcodes_obs[barcode])
+        #match = "matched" if barcode_table.get(barcode) else "unmatched"
+        #matches.append(match)
+    #return barcodes, counts, matches
 
 def make_logger(options, file_name):
     """
