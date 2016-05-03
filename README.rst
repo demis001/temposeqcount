@@ -24,12 +24,13 @@ Follow the insturciton under the install link.
 Installation
 ------------
 
-See `Installation <docs/source/install.rst`
+See `Installation <docs/source/install.rst>`_
 
 Changelog
+
 ---------
 
-See `Changelog <CHANGELOG.rst`
+See `Changelog <CHANGELOG.rst>`_
    
 Supported Python Versions
 -------------------------
