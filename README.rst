@@ -10,7 +10,6 @@ raslpipe is analysis pipeline for RASL-Seq project, this is the development stag
 
 It is an all-in-one solution, the tools uses many python packages and other dependencies. But,the application install the dependancies during installation.  They include:
 
-* Paver_ for running miscellaneous tasks
 * Setuptools_ for distribution (Setuptools and Distribute_ have merged_)
 * Sphinx_ for documentation
 * flake8_ for source code checking
