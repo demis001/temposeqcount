@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 if not on_rtd:
-    import syphinx_rtd_theme
+    import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 
