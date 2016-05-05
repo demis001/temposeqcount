@@ -80,7 +80,26 @@ options(setup=setup_dict,
           settings=Bunch(
             shell_file=path('raslpipe/files/settings.sh')
         ),
-
+        samtools=Bunch(
+          sdir=path('raslpipe/download'),
+          bindir=path('raslpipe/bin')
+        ),
+        help2man=Bunch(
+        sdir=path('raslpipe/download'),
+            url='http://ftp.gnu.org/gnu/help2man/help2man-1.43.3.tar.gz',
+        ),
+        libtool=Bunch(
+        sdir=path('raslpipe/download'),
+        url='http://mirror.easthsia.com/gnu/libtool/libtool-2.4.tar.gz'
+        ),
+        textinfo=Bunch(
+        sdir=path('raslpipe/download'),
+        url='http://ftp.gnu.org/gnu/texinfo/texinfo-6.1.tar.gz'
+        ),
+        graphviz=Bunch(
+        sdir=path('raslpipe/download'),
+        url='http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-2.38.0.tar.gz'
+        ),
         virtualenv=Bunch(
         packages_to_install=[],
         no_site_packages=True)
@@ -136,7 +155,15 @@ def download_compile_seqtk(options):
         else:
             lbcmd = 'cd %s && git clone %s  && cd seqtk && make' %(options.seqtk.downloads, options.seqtk.url)
             sh(lbcmd)
-
+@task
+def download_compile_samtools(options):
+    """installs the current package"""
+    samtoolsbin=join(sys.prefix,'bin','samtools')
+    if not exists(samtoolsbin):
+        info("Compiling samtools....")
+        currwd = os.getcwd()
+        sdir = path(currwd) / options.samtools.sdir
+        sh('(cd %s; wget https://github.com/samtools/htslib/archive/1.1.tar.gz -O- | tar xzf -; mv htslib-* htslib;wget https://github.com/samtools/samtools/archive/1.1.tar.gz -O- | tar xzf -; mv samtools-* samtools; cd samtools;make; cd %s)' % (sdir, sdir))
 
 @task
 def install_fastax_lib(options):
@@ -181,17 +208,19 @@ def install_R(options):
         os.symlink(src, dist)
         os.chmod(dist, 0755)
 @task
+@needs('install_R')
 def setenviron(options):
     """Setup environment varaible"""
     src = options.environ.installdir
     rldpath = os.path.join(src, "R-3.2.3", "lib64", "R", "lib")
     if 'LD_LIBRARY_PATH' not in os.environ:
-        os.environ['LD_LIBRARY_PATH']= rldpath
+        os.environ['LD_LIBRARY_PATH']=rldpath
     else:
-        os.environ['LD_LIBRARY_PATH']+=  rldpath
+        os.environ['LD_LIBRARY_PATH']+=rldpath
 
 
 @task
+@needs('setenviron')
 def install_rpy2(options):
     """Install rpy2 python package"""
     info("Install rpy2 python package, require dependencies ...")
@@ -205,6 +234,57 @@ def install_rpy2(options):
         lbcmd = 'cd %s  && export CFLAGS="-I%s" && python setup.py build  install ' %(dist,rinclude)
         sh(lbcmd)
 
+@task
+def download_compile_textinfo(options):
+    """installs the textinfo, required by graphviz"""
+    makeinfobin=join(sys.prefix,'bin','makeinfo')
+    if not exists(makeinfobin):
+        info("Installing textinfo...")
+        currwd = os.getcwd()
+        sdir = path(currwd) / options.textinfo.sdir
+        url=options.textinfo.url
+        info(sdir)
+        sh('(cd %s; wget %s; tar -xzvf texinfo-6.1.tar.gz;cd texinfo-6.1;./configure --prefix=%s/texinfo-6.1;make;make install)' %(sdir,url, sdir))
+
+@task
+def download_compile_help2man(options):
+    """installs the help2man, required by graphviz"""
+    help2manbin=join(sys.prefix,'bin','help2man')
+    if not exists(help2manbin):
+        info("Installing help2man...")
+        currwd = os.getcwd()
+        sdir = path(currwd) / options.help2man.sdir
+        url = options.help2man.url
+        src = join(sys.prefix, "download",'help2man-1.43.3' )
+        info(sdir)
+        sh('cd %s; wget %s;tar -xzvf help2man-1.43.3.tar.gz; cd help2man-1.43.3; ./configure CC="cc" --prefix=%s;make;make install' %(sdir,url,src))
+
+@task
+@needs('download_compile_help2man', 'download_compile_textinfo')
+def download_compile_libtool(options):
+    """installs libtool, needed by graphviz ... """
+    libtoolbin=join(sys.prefix,'bin','libtool')
+    if not exists(libtoolbin):
+        info("Installing libtool, needed by graphviz ...")
+        currwd = os.getcwd()
+        sdir = path(currwd)  / options.libtool.sdir
+        url = options.libtool.url
+        info(sdir)
+        sh('(cd %s; wget %s; tar -xzvf libtool-2.4.tar.gz;cd libtool-2.4;./configure CC="cc" --prefix=%s/libtool-2.4;make;make install)' %(sdir,url, sdir))
+
+@task
+@needs('download_compile_libtool')
+def download_compile_graphviz(options):
+    """installs the current package"""
+    graphvizbin=join(sys.prefix,'bin','dot')
+    url = options.graphviz.url
+    info(graphvizbin)
+    if not exists(graphvizbin):
+        info("Installing graphviz...")
+        currwd=os.getcwd()
+        sdir =path(currwd) / options.graphviz.sdir
+        info(sdir)
+        sh('(cd %s;wget %s;  tar -xzvf graphviz-2.38.0.tar.gz; cd graphviz-2.38.0;./configure --prefix=%s/graphviz-2.38.0;make;make install)' %(sdir,url,sdir))
 #export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/data/jimaprogramming/python/raslpipe/raslpipe/lib/R-3.2.3/lib64/R/lib/
 
 @task
@@ -215,9 +295,9 @@ def insallRpackages(options):
     spe = "$"
     cmd = 'export LD_LIBRARY_PATH=%sLD_LIBRARY_PATH:%s' %(spe,src)
     sh(cmd)
-    import rpy2.robjects as robjects
+   # import rpy2.robjects as robjects
     import rpy2.robjects.packages as rpackages
-    from rpy2.robjects.vectors import StrVector
+    #from rpy2.robjects.vectors import StrVector
     packageNames = ('ggplot2')
 
     if all(rpackages.isinstalled(x) for x in packageNames):
@@ -361,13 +441,12 @@ def init():
     info (INSTRUICTIONS)
 
 @task
-@needs('install_python_dependencies','install_other_dependencies', 'install_python_dependencies_nodeps')
+@needs('install_python_dependencies','install_other_dependencies')
 def install_dependencies():
     pass
 
 @task
-@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','install_fastax_lib', 'install_fastx', 'install_R','setenviron', 'install_rpy2', 'insallRpackages', 'set_ld_path')
-
+@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'install_rpy2', 'insallRpackages', 'set_ld_path', 'download_compile_graphviz')
 def install_other_dependencies():
     pass
 
