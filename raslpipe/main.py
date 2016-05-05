@@ -14,6 +14,7 @@ helpers.setup_shell_environment()
 import tasks
 import glob
 is_64bits = sys.maxsize > 2**32
+#import graphviz
 if not is_64bits:
     print "Please upgrade your operating system to 64 bit, application such as diamond don't run on 32 bit"
     sys.exit(0)
@@ -73,7 +74,7 @@ param = [
     #"""Wrapper around Result.report"""
     #result.report(logger_proxy, logging_mutex)
     #print result
-
+@graphviz(height=1.8, width=2, label="Prepare\nanalysis")
 @follows(mkdir(proDir, inputDir, resultsDir, logsDir))
 @files(param)
 def prepare_analysis(input,output):
@@ -85,6 +86,7 @@ def prepare_analysis(input,output):
     result = tasks.copyFileToAnaFolder(input, output)
     return result
 
+@graphviz(height=1.8, width=2, label="Prepare DB\nfiles")
 @follows(prepare_analysis)
 @transform(prepare_analysis, suffix(".probes"), ".fa")
 def prepareDB_file(input_file, output_file):
@@ -93,6 +95,8 @@ def prepareDB_file(input_file, output_file):
     print input_file
     result =tasks.db_file(input_file, output_file)
     return result
+
+@graphviz(height=1.8, width=2, label="Format \nbarcodes")
 @follows(prepare_analysis)
 @transform(prepare_analysis, suffix(".bc"),["_platebc.txt", "_wellbc.txt"])
 def prepareBarcode(input, output):
@@ -117,6 +121,7 @@ def qa_outfile(input):
 #@files([
     #[join(proDir, "input", inFile), qualityAnalysisDir],
 #])
+graphviz(height=1.8, width=2, label="Generate\nQC")
 @follows(mkdir(qualityAnalysisDir))
 @transform(prepare_analysis, suffix(".fastq"), "_fastqc.html")
 def fastQC(input, output):
@@ -130,7 +135,7 @@ def fastQC(input, output):
         tasks.createQuality(input, qualityAnalysisDir)
     return
 
-
+@graphviz(height=1.8, width=2, label="Index\nDB")
 @follows(prepareDB_file)
 @follows(mkdir(genomeDir))
 @transform(prepareDB_file, formatter(".+.fa"), "SAindex")
@@ -145,12 +150,12 @@ def indexGenomeFile(input, output):
     return result
 
 
-
+@graphviz(height=1.8, width=2, label="Split Plate\nbarcodes")
 @follows(prepareBarcode)
 @transform(prepareBarcode,formatter(".+_platebc.txt"), ".fq")
 def split_barcodes_plate(input,output):
     """Split the fastq file based on well barcode"""
-    prefix= inputDir +"/" + splitext(basename(inputFile))[0] + "_PLATE_"
+    prefix= inputDir +"/" + splitext(basename(inputFile))[0] + "__"
     print tasks.comment()
     print input
     print output
@@ -159,11 +164,12 @@ def split_barcodes_plate(input,output):
     result = tasks.split_plate_barcode(input, inputFile, inputDir, prefix,output)
     return result
 
+@graphviz(height=1.8, width=2, label="split Well\nbarcodes")
 @follows(split_barcodes_plate)
-@transform(join(inputDir, "*_PLATE_PL_*.fq"), suffix(".fq"),  ".fastq" )
+@transform(join(inputDir, "*__PL__*.fq"), suffix(".fq"),  ".fastq" )
 def split_barcodes_well(input, output):
     """Split each plate barcode splitted fastq to well barcode """
-    prefix = splitext(input)[0] + "_WELL_"
+    prefix = splitext(input)[0] + "__"
     suf = splitext(output)[1]
     barcode = glob.glob(join(inputDir, "*wellbc.txt"))
     wellbarcode = barcode[0]
@@ -177,8 +183,9 @@ def split_barcodes_well(input, output):
     result = tasks.split_well_barcode(wellbarcode, input, inputDir, prefix, suf)
     return result
 
+@graphviz(height=1.8, width=2, label="Trim\nadaptors")
 @follows(split_barcodes_well)
-@transform(join(inputDir,"*_*_WELL_WA_*.fastq"), suffix(".fastq"), ".trim.fastq")
+@transform(join(inputDir,"*__WA__*.fastq"), suffix(".fastq"), "__trim.fastq")
 def trim_adaptors(infastq,outfastq):
     """Trim TEMPseq barcodes and Adaptots eg if well barcode is 8 nt and  Ad1 (nt=17), the --trimleft=25
     and plate barcode is 7 nt and Ad2 is 17 nt, then the --trimright=24"""
@@ -190,6 +197,7 @@ def trim_adaptors(infastq,outfastq):
     result = tasks.trim_Ad1_Ad2(infastq, trimleft, trimright, outfastq)
     return result
 
+@graphviz(height=1.8, width=2, label="Generate\nsummary\nbc split")
 @follows(trim_adaptors)
 @collate(join(inputDir, "*_wellsplit_barcode.log"), formatter("wellsplit_barcode.log"), inputDir + "/wellbarcodesplit_stat.combined.log")
 def combine_well_logfiles(input, output):
@@ -205,6 +213,7 @@ def combine_well_logfiles(input, output):
      #[join(proDir, "input", "split_plate_barcode.log"), join(proDir, "input", "split_well_barcode.log"),
       #inputDir, "plateBarcode", "wellBarcode"],
 #])
+@graphviz(height=1.8, width=2, label="plot bc split\nSummary")
 @follows(split_barcodes_well)
 @transform(combine_well_logfiles,  suffix(".log"), ".png")
 def plot_barcodeSummary(logFileWell,  wellOut):
@@ -219,14 +228,15 @@ def plot_barcodeSummary(logFileWell,  wellOut):
     result = tasks.plot_summary(logFileWell, inputDir,wellOut)
     return result
 
+@graphviz(height=1.8, width=2, label="Map to\nprobes")
 @follows(indexGenomeFile)
 @follows(trim_adaptors)
-@transform(join(inputDir,"*_WELL_WA_*.trim.fastq" ), formatter('(.*).trim.fastq'), "\1.sam" )
+@transform(join(inputDir,"*__WA__*__trim.fastq" ), formatter('(.*)__trim.fastq'), "\1.sam" )
 def map_to_probes(fastq, output):
     """Map sequence with barcode """
     genomeDir = inputDir + "/Genome"
     suf = splitext(fastq)[0]
-    outPrefix = suf + "_seq2probesmap"
+    outPrefix = suf
     print tasks.comment()
     print fastq
     print output
@@ -236,7 +246,77 @@ def map_to_probes(fastq, output):
     result = tasks.map_seq_to_probes(fastq, genomeDir, cpuNum, outPrefix)
     return result
 
+@graphviz(height=1.8, width=2, label="convert\nsam2bam")
+@follows(map_to_probes)
+@transform(join(inputDir, "*trimAligned.out.sam"), suffix(".sam"), ".bam")
+def convert_sam_bam(input, output):
+    """Convert sam to bam"""
+    print tasks.comment()
+    print input
+    print output
+    print tasks.comment()
+    result = tasks.convertSamToBam(input, output)
+    return result
 
+@graphviz(height=1.8, width=2, label="Sort\nbam")
+@follows(convert_sam_bam)
+@transform(join(inputDir, "*trimAligned.out.bam"), suffix(".bam"), "sorted")
+def sort_bam_file(input, output):
+    """Sort bam files"""
+    print tasks.comment()
+    print input
+    print output
+    print tasks.comment()
+    result = tasks.sortBamFile(input,output)
+    return result
+
+@graphviz(height=1.8, width=2, label="Index\nbam")
+@follows(sort_bam_file)
+@transform(join(inputDir, "*outsorted.bam"), suffix(".bam"), ".bai")
+def indexBam(input,output):
+    """Index bam files"""
+    print tasks.comment()
+    print input
+    print output
+    print tasks.comment()
+    result = tasks.index_bam_file(input)
+    return result
+
+@graphviz(height=1.8, width=2, label="Count\nreads")
+@follows(indexBam)
+@transform(join(inputDir, "*outsorted.bam"), suffix(".bam"), ".count.txt")
+def count_read_mapped_to_probes(input, output):
+    """Map aligned reads that mapped to the probe sequence"""
+    print tasks.comment()
+    print input
+    print output
+    print tasks.comment()
+    result = tasks.countReadsMappedToProbes(input, output)
+    return result
+
+@graphviz(height=1.8, width=2, label="Combine\ncount data")
+@follows(count_read_mapped_to_probes)
+@collate(join(inputDir, "*outsorted.count.txt"), formatter(".txt"), inputDir + "/summary_countcombined.csv")
+def combine_count_data(input, output):
+    """Combine count files and format it"""
+    print tasks.comment()
+    print input
+    print output
+    print tasks.comment()
+    result = tasks.combineCount(input, output)
+    return result
+
+
+def convertPs(psfile):
+    """Utility function to convert ps file to pdf
+    during test
+    """
+    if os.path.isfile(psfile):
+        cmd = "ps2pdf %s" % (psfile)
+        runCommand(cmd, "T")
+    else:
+        pass
+    return
 #def createPram(output_file):
     #'''
     #Create param.txt inside projectdir/input
@@ -363,10 +443,22 @@ def main():
     #pipeline_commands = [
         #(__name__ + '.prepare_analysis', prepare_analysis),
     #]
-    #tasks_torun = [prepare_analysis]
-    pipeline_run(["prepare_analysis", "prepareDB_file", "prepareBarcode", "fastQC","split_barcodes_plate", "split_barcodes_well",
-                  "trim_adaptors", "combine_well_logfiles", "plot_barcodeSummary", "map_to_probes"], verbose = 1, multiprocess = cpuNum)
+    tasks_torun = [prepare_analysis, prepareDB_file, prepareBarcode, fastQC, indexGenomeFile, split_barcodes_plate, split_barcodes_well,
+                   trim_adaptors, combine_well_logfiles, plot_barcodeSummary, map_to_probes, convert_sam_bam,
+                   sort_bam_file, indexBam, count_read_mapped_to_probes, combine_count_data]
+
+    pipeline_printout_graph('summary_pipeline_stages.ps', 'ps', tasks_torun, user_colour_scheme={"colour_scheme_index": 6},
+                            no_key_legend=False, pipeline_name="TempO-seq Analysis", size=(11, 8), dpi = 30, forcedtorun_tasks = [indexGenomeFile, combine_count_data],
+                            draw_vertically=True, ignore_upstream_of_target=False)
+    pipeline_run(["prepare_analysis", "prepareDB_file", "prepareBarcode", "fastQC","indexGenomeFile", "split_barcodes_plate", "split_barcodes_well",
+                  "trim_adaptors", "combine_well_logfiles", "plot_barcodeSummary", "map_to_probes", "convert_sam_bam",
+                  "sort_bam_file", "indexBam", "count_read_mapped_to_probes", "combine_count_data"], verbose = 1, multiprocess = cpuNum)
     #print "....................." + basedir + "/" + project_dir
+    tasks.comment()
+    helpers.run(options)
+    psfile = "./summary_pipeline_stages.ps"
+    convertPs(psfile)
+    tasks.comment()
 
     #if options.param:
         #helpers.create_new_project(project_dir)
