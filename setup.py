@@ -280,7 +280,12 @@ setup_dict = dict(
     scripts = [
         'raslpipe/lib/fastx_toolkit/bin/fastq_masker',
         'raslpipe/download/seqtk/seqtk',
-    ] + glob('raslpipe/lib/fastx_toolkit/bin/fast*'),
+        'raslpipe/download/samtools/samtools',
+        'raslpipe/download/help2man-1.43.3/help2man',
+    ] + glob('raslpipe/lib/fastx_toolkit/bin/fast*') +
+        glob('raslpipe/download/libtool-2.4/bin/lib*') +
+        glob('raslpipe/download/texinfo-6.1/bin/*' ) +
+        glob('raslpipe/download/graphviz-2.38.0/bin/*'),
     package_data = {
         'raslpipe': ['files/*'],
 
