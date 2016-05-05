@@ -253,6 +253,32 @@ def get_options():
         type = int,
         help = "lenght of sequence to trim from the 5' end, length of plate barcode + Adaptor 2 (AD2)"
     )
+    parser.add_argument("-n", "--just_print", dest="just_print",
+                        action="store_true", default=False,
+                        help="Don't actually run any commands; just print "
+                             "the pipeline.")
+    parser.add_argument("--forced_tasks", dest="forced_tasks",
+                        action="append",
+                        default=list(),
+                        metavar="JOBNAME",
+                        type=str,
+                        help="Pipeline task(s) which will be included "
+                             "even if they are up to date.")
+    parser.add_argument("-t", "--target_tasks", dest="target_tasks",
+                        action="append",
+                        default=list(),
+                        metavar="JOBNAME",
+                        type=str,
+                        help="Target task(s) of pipeline.")
+    parser.add_argument("--flowchart", dest="flowchart",
+                        metavar="FILE",
+                        type=str,
+                        help="Don't actually run any commands; just print "
+                             "the pipeline as a flowchart.")
+    parser.add_argument("-v", "--verbose", dest="verbose",
+                        action="count", default=0,
+                        help="Print more verbose messages for each "
+                             "additional verbose level.")
     return parser.parse_args()
 
     def check_mandatory_options(options, mandatory_options, helpstr):
