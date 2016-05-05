@@ -16,15 +16,16 @@ CentOS
 
 .. code-block:: bash
 
-    #> yum install openmpi openmpi-devel git python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget java-1.6.0 dejavu*
+    #> yum install openmpi openmpi-devel git  ghostscript python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget java-1.6.0 dejavu*
     #> yum groupinstall Development Tools
     
 Ubuntu
+
 ------
 
 .. code-block:: bash
 
-    #> apt-get install openmpi-bin libopenmpi-dev python-dev git zlib1g-dev build-essential libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
+    #> apt-get install openmpi-bin libopenmpi-dev python-dev  ghostscript git zlib1g-dev build-essential libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
 
 
 
