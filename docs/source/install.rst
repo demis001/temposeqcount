@@ -42,7 +42,7 @@ Installation
     
         cd raslpipe
 
-#. Setup a :ref:`virtualenv <activate>` to install into and build documentation
+#. Setup a `virtualenv <activate>` to install into and build documentation
 
     #. Install virtualenv python environment
 
