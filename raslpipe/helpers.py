@@ -211,7 +211,7 @@ def get_options():
         '-f',
         '--fastq_file',
         required = True,
-        help="RASL-Seq fastq file name"
+        help="RASL-Seq fastq run dir"
 
     )
     parser.add_argument(
@@ -222,12 +222,12 @@ def get_options():
                                 DonorProbeSequence AcceptorAdaptorSequence DonorAdaptorSequence ProbeName, example \
                                 probes.txt "
     )
-    parser.add_argument(
-        '-w',
-        '--plate_well_bc',
-        required = True,
-        help = "Specifies a tab delemeted file of the input plate and well barcode file containing  the following columns: PlateBarcode and WellBarcode"
-    )
+    #parser.add_argument(
+        #'-s',
+        #'--sample_sheet',
+        #required = True,
+        #help = "Specifies a tab delemeted file of the input plate and well barcode file containing  the following columns: PlateBarcode and WellBarcode"
+    #)
     parser.add_argument(
         '-c',
         '--cpuNum',
@@ -236,23 +236,23 @@ def get_options():
         type=int,
         help = "Number of CPU to use [DEFAULT: %(default)s]"
     )
-    parser.add_argument(
-        '-l',
-        '--trimleft',
-        dest="trimleft",
-        required = True,
-        type=int,
-        help = "Length of sequence  to trim from the 3' end, length of well bacode + adaptor 1 (AD1)"
+    #parser.add_argument(
+        #'-l',
+        #'--trimleft',
+        #dest="trimleft",
+        #required = True,
+        #type=int,
+        #help = "Length of sequence  to trim from the 3' end, length of well bacode + adaptor 1 (AD1)"
 
-    )
-    parser.add_argument(
-        '-r',
-        '--trimright',
-        dest='trimright',
-        required =True,
-        type = int,
-        help = "lenght of sequence to trim from the 5' end, length of plate barcode + Adaptor 2 (AD2)"
-    )
+    #)
+    #parser.add_argument(
+        #'-r',
+        #'--trimright',
+        #dest='trimright',
+        #required =True,
+        #type = int,
+        #help = "lenght of sequence to trim from the 5' end, length of plate barcode + Adaptor 2 (AD2)"
+    #)
     parser.add_argument("-n", "--just_print", dest="just_print",
                         action="store_true", default=False,
                         help="Don't actually run any commands; just print "
