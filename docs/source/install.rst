@@ -49,7 +49,7 @@ Installation
         .. code-block:: bash
 
             wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.11.6.tar.gz -O- | tar xzf -
-            python virtualenv-1.11.6/virtualenv.py pathdiscov
+            python virtualenv-1.11.6/virtualenv.py raslpipe
 
     #. Activate the virtualenv to install everything into
 
