@@ -55,7 +55,7 @@ Installation
 
         .. code-block:: bash
 
-            source pathdiscov/bin/activate
+            source raslpipe/bin/activate
             pip install paver
 
     #. If you want to view/install the built html documentation
@@ -80,7 +80,8 @@ Installation
 
         python setup.py install
 
-#. Quick verify of a few things
+#. Quick verify of a few thi
+   ngs
 
     * See if required executables are available
 
@@ -104,7 +105,8 @@ Installation
 
     .. code-block:: bash
 
-        raslpipe_cli -o outdir -f testData/sample.fastq -p testData/sample.probes -w testData/sample.bc --trimleft 25 --trimright 24
+        raslpipe_cli --flowchart outdir_pipeline_stages_to_run.ps -o outdir -f ./testData -p ./testData/160219_tox_3d_manifest.csv
+        
 
 #. The END
 
