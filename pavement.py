@@ -144,6 +144,12 @@ def download_compile_star(options):
             sh('(cd %s; wget https://github.com/alexdobin/STAR/archive/2.5.1b.tar.gz -O- | tar xzf -; cd STAR-2.5.1b; make; ln -s source/STAR %s; cd %s)' % (sdir, bdir, sdir))
 
 @task
+def installggplot():
+    """install ggplot"""
+    cmd = 'pip install git+https://github.com/yhat/ggplot'
+    sh(cmd)
+
+@task
 def download_compile_seqtk(options):
     """Download and compile seqtk"""
     appbin=join(sys.prefix, 'bin', 'seqtk')
@@ -446,7 +452,8 @@ def install_dependencies():
     pass
 
 @task
-@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'install_rpy2', 'insallRpackages', 'set_ld_path', 'download_compile_graphviz')
+#@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'in)
+@needs('installggplot','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_graphviz')
 def install_other_dependencies():
     pass
 
