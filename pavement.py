@@ -141,7 +141,7 @@ def download_compile_star(options):
         bdir = path(currwd) / options.star.bindir
         dist = join(sys.prefix, 'bin', 'STAR')
         if not islink(dist):
-            sh('(cd %s; wget https://github.com/alexdobin/STAR/archive/2.5.1b.tar.gz -O- | tar xzf -; cd STAR-2.5.1b; make; ln -s source/STAR %s; cd %s)' % (sdir, bdir, sdir))
+            sh('(cd %s; wget https://github.com/alexdobin/STAR/archive/2.5.1b.tar.gz -O- | tar xzf -; cd STAR-2.5.1b; make; ln -s %s/STAR-2.5.1b/bin/Linux_x86_64/STAR %s; cd %s)' % (sdir, sdir, bdir, sdir))
 
 @task
 def installggplot():
