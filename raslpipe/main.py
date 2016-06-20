@@ -13,7 +13,7 @@ from os.path import (
 helpers.setup_shell_environment()
 import tasks
 import glob
-import pyprind
+#import pyprind
 from  termcolor import colored
 import datetime
 is_64bits = sys.maxsize > 2**32
