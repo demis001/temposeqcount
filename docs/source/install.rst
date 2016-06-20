@@ -65,7 +65,7 @@ Installation
         .. code-block:: bash
 
             source raslpipe/bin/activate
-            pip install paver
+            pip install paver sphinx_rtd_theme
 
     #. If you want to view/install the built html documentation
 
