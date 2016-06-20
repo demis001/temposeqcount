@@ -16,20 +16,22 @@ CentOS
 
 .. code-block:: bash
 
-    #> yum install openmpi openmpi-devel git python-sphinx.noarch ghostscript python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget java-1.6.0 dejavu*
+    #> yum install git python-sphinx.noarch g++ ghostscript python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget java-1.6.0 dejavu*
     #> yum groupinstall Development Tools
     
 Ubuntu
 
 ------
 
+
 .. code-block:: bash
 
-    #> apt-get install openmpi-bin libopenmpi-dev python-dev  ghostscript git zlib1g-dev build-essential libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
+    #> apt-get install python-dev g++ libjpeg-dev pkg-config ghostscript git gfortran zlib1g-dev build-essential libopenblas-base libopenblas-dev liblapack-dev python-sphinx libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
 
-
+   
 
 Installation
+
 ============
 
 #. Clone the repository
@@ -41,6 +43,7 @@ Installation
     .. code-block:: bash
     
         cd raslpipe
+
 
 #. Setup a `virtualenv <activate>` to install into and build documentation
 
@@ -88,10 +91,11 @@ Installation
         .. code-block:: bash
 
             # These should now all be in your path so should work
-            apps=( STAR samtools fastqc R seqtk f2py raslpipe_cli)
+            apps=( STAR samtools fastqc seqtk dot raslpipe_cli)
             for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '\[main\]|usage|useage|qualifiers|DESCRIPTION|Syntax' && echo "$p ok" || echo "$p broken?"; done
 
 
+            
 #. Optional: Run a test dataset
 
     Anytime you run the pipeline you need to activate the pipeline first. If the pipeline is activated you will see 
