@@ -282,6 +282,7 @@ setup_dict = dict(
         'raslpipe/download/seqtk/seqtk',
         'raslpipe/download/samtools/samtools',
         'raslpipe/download/help2man-1.43.3/help2man',
+        'raslpipe/download/graphviz-2.38.0/bin/dot',
     ] + glob('raslpipe/lib/fastx_toolkit/bin/fast*') +
         glob('raslpipe/download/libtool-2.4/bin/lib*') +
         glob('raslpipe/download/texinfo-6.1/bin/*' ) +
