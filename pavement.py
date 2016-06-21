@@ -635,6 +635,14 @@ def get_tasks():
     for task in environment.get_tasks():
         print(task.shortname)
 
+@task
+@needs('install_python_dependencies')
+def doc_man():
+    """Build man page"""
+    retcode=_doc_make('man')
+    if retcode:
+        raise SystemExit(retcode)
+
 
 @task
 def doc_html():
