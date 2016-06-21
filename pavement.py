@@ -159,7 +159,7 @@ def download_compile_seqtk(options):
     srcdir = join(options.seqtk.downloads, "seqtk")
     if not exists(appbin):
         if exists(srcdir):
-            sh('cd %s ;make' %(options.seqtk.downloads))
+            sh('cd %s ; cd seqtk;make' %(options.seqtk.downloads))
         else:
             sh('cd %s ;git clone %s ; cd seqtk ; make' %(options.seqtk.downloads, options.seqtk.url))
 @task
