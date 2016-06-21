@@ -161,7 +161,7 @@ def download_compile_seqtk(options):
         if exists(srcdir):
             sh('cd %s ;make' %(options.seqtk.downloads))
         else:
-            sh('cd %s ;git clone %s  -O- | tar xzf -; cd seqtk ; make' %(options.seqtk.downloads, options.seqtk.url))
+            sh('cd %s ;git clone %s ; cd seqtk ; make' %(options.seqtk.downloads, options.seqtk.url))
 @task
 def download_compile_samtools(options):
     """installs the current package"""
