@@ -26,7 +26,6 @@ Installation
 See `Installation <docs/source/install.rst>`_
 
 Changelog
-
 ---------
 
 See `Changelog <CHANGELOG.rst>`_
@@ -37,7 +36,12 @@ Supported Python Versions
 The Project  supports the following versions out of the box:
 
 * Python 2.6, 2.7
-* PyPy 1.9
+* Tested on Ubuntu 14.04 and CentOS-7
+
+Application routine template
+----------------------------
+
+.. image:: raslpip_stages_to_run.png
 
 
 Licenses
