@@ -16,8 +16,9 @@ CentOS
 
 .. code-block:: bash
 
-    #> yum install git python-sphinx.noarch g++ ghostscript python-devel zlib-devel ncurses-devel freetype-devel libpng-devel wget java-1.6.0 dejavu*
+    #> yum install git python-sphinx.noarch g++ ghostscript python-devel zlib-devel ncurses-devel freetype-devel libjpeg-turbo-utils.x86_64 libjpeg-turbo-devel.x86_64  libjpeg-turbo-static.x86_64 libpng-devel wget java-1.6.0 dejavu*
     #> yum groupinstall Development Tools
+    #> yum install blas-devel.x86_64 blas-static.x86_64  blas.x86_64   blas64.x86_64 lapack-devel.x86_64 lapack-static.x86_64  lapack.x86_64 lapack64.x86_64
     
 Ubuntu
 
@@ -32,7 +33,8 @@ I have tested on Ubuntu 14.04. STAR aligner require GLIBCXX_3.4.20, if your gcc 
 Check the version:
 
 .. code-block:: bash
-   strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX
+
+    #> strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX
    
 
 Installation
