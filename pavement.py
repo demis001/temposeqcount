@@ -249,7 +249,6 @@ def download_compile_textinfo(options):
         info("Installing textinfo...")
         currwd = os.getcwd()
         sdir = path(currwd) / options.textinfo.sdir
-        sh ('rm -rf %s*' %(sdir))
         url=options.textinfo.url
         info(sdir)
         sh('(cd %s; wget %s; tar -xzvf texinfo-6.1.tar.gz;cd texinfo-6.1;./configure --prefix=%s/texinfo-6.1;make;make install)' %(sdir,url, sdir))
@@ -291,7 +290,6 @@ def download_compile_graphviz(options):
         info("Installing graphviz...")
         currwd=os.getcwd()
         sdir =path(currwd) / options.graphviz.sdir
-        sh('rm -rf %s*' %(sdir))
         info(sdir)
         sh('(cd %s;wget %s -O- | tar xzf -; cd graphviz-2.38.0;./configure --prefix=%s/graphviz-2.38.0;make;make install)' %(sdir,url,sdir))
 #export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/data/jimaprogramming/python/raslpipe/raslpipe/lib/R-3.2.3/lib64/R/lib/
