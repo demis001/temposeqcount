@@ -98,7 +98,7 @@ options(setup=setup_dict,
         ),
         graphviz=Bunch(
         sdir=path('raslpipe/download'),
-        url='http://www.graphviz.org/pub/graphviz/ARCHIVE/graphviz-2.38.0.tar.gz'
+        url='http://ftp.osuosl.org/pub/blfs/conglomeration/graphviz/graphviz-2.38.0.tar.gz'
         ),
         virtualenv=Bunch(
         packages_to_install=[],
@@ -146,8 +146,11 @@ def download_compile_star(options):
 @task
 def installggplot():
     """install ggplot"""
-    cmd = 'pip install git+https://github.com/yhat/ggplot'
-    sh(cmd)
+    try:
+        import ggplot
+    except ImportError:
+        cmd = 'pip install git+https://github.com/yhat/ggplot'
+        sh(cmd)
 
 @task
 def download_compile_seqtk(options):
@@ -248,6 +251,7 @@ def download_compile_textinfo(options):
         info("Installing textinfo...")
         currwd = os.getcwd()
         sdir = path(currwd) / options.textinfo.sdir
+        sh ('rm -rf %s*' %(sdir))
         url=options.textinfo.url
         info(sdir)
         sh('(cd %s; wget %s; tar -xzvf texinfo-6.1.tar.gz;cd texinfo-6.1;./configure --prefix=%s/texinfo-6.1;make;make install)' %(sdir,url, sdir))
@@ -289,8 +293,9 @@ def download_compile_graphviz(options):
         info("Installing graphviz...")
         currwd=os.getcwd()
         sdir =path(currwd) / options.graphviz.sdir
+        sh('rm -rf %s*' %(sdir))
         info(sdir)
-        sh('(cd %s;wget %s;  tar -xzvf graphviz-2.38.0.tar.gz; cd graphviz-2.38.0;./configure --prefix=%s/graphviz-2.38.0;make;make install)' %(sdir,url,sdir))
+        sh('(cd %s;wget %s -O- | tar xzf -; cd graphviz-2.38.0;./configure --prefix=%s/graphviz-2.38.0;make;make install)' %(sdir,url,sdir))
 #export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/data/jimaprogramming/python/raslpipe/raslpipe/lib/R-3.2.3/lib64/R/lib/
 
 @task
