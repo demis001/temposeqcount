@@ -159,11 +159,9 @@ def download_compile_seqtk(options):
     srcdir = join(options.seqtk.downloads, "seqtk")
     if not exists(appbin):
         if exists(srcdir):
-            lbcmd = 'cd %s && cd seqtk && make' %(options.seqtk.downloads)
-            sh(lbcmd)
+            sh('cd %s ;make' %(options.seqtk.downloads))
         else:
-            lbcmd = 'cd %s && git clone %s  && cd seqtk && make' %(options.seqtk.downloads, options.seqtk.url)
-            sh(lbcmd)
+            sh('cd %s ;git clone %s  -O- | tar xzf -; cd seqtk ; make' %(options.seqtk.downloads, options.seqtk.url))
 @task
 def download_compile_samtools(options):
     """installs the current package"""
