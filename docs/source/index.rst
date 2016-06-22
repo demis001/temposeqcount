@@ -10,6 +10,7 @@ Contents:
    help
    analysis
    scripts/index
+   stages/index
    modules
 
 
