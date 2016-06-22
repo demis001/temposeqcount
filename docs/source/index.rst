@@ -7,6 +7,10 @@ Contents:
    :maxdepth: 2
 
    install
+   help
+   analysis
+   scripts/index
+   modules
 
 
 .. only:: html
