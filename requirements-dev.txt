@@ -38,4 +38,4 @@ graphviz
 sphinx_rtd_theme
 image
 #ggplot
-#-e git+https://github.com/yhat/ggplot
+git+https://github.com/yhat/ggplot
