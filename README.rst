@@ -49,7 +49,7 @@ Application routine template
 Licenses
 ========
 
-The code which makes up this raslpipe is licensed under the GPL license. Feel free to use it in your free software/open-source or proprietary projects.
+The code which makes up this raslpipe is licensed under the GPL license. Feel free to use it in your free software/open-source.
 
 
 Issues
