@@ -1,5 +1,5 @@
-Run `sphinx-apidoc -o . ../../raslpipe' in this directory.
+Run the following to generate the documentation and then view it
 
-This will generate `modules.rst' and `raslpipe.rst'.
+.. code-block:: bash
 
-Then include `modules.rst' in your `index.rst' file.
+    cd docs && make html && firefox build/html/index.html
