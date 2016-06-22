@@ -143,14 +143,14 @@ def download_compile_star(options):
         if not islink(dist):
             sh('(cd %s; wget https://github.com/alexdobin/STAR/archive/2.5.2a.tar.gz -O- | tar xzf -; cd STAR-2.5.2a; make; ln -s %s/STAR-2.5.2a/bin/Linux_x86_64/STAR %s; cd %s)' % (sdir, sdir, bdir, sdir))
 
-@task
-def installggplot():
-    """install ggplot"""
-    try:
-        import ggplot
-    except ImportError:
-        cmd = 'pip install git+https://github.com/yhat/ggplot'
-        sh(cmd)
+#@task
+#def installggplot():
+    #"""install ggplot"""
+    #try:
+        #import ggplot
+    #except ImportError:
+        #cmd = 'pip install git+https://github.com/yhat/ggplot'
+        #sh(cmd)
 
 @task
 def download_compile_seqtk(options):
@@ -454,7 +454,7 @@ def install_dependencies():
 
 @task
 #@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'in)
-@needs('installggplot','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_help2man', 'download_compile_textinfo','download_compile_libtool','download_compile_graphviz')
+@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_help2man', 'download_compile_textinfo','download_compile_libtool','download_compile_graphviz')
 def install_other_dependencies():
     pass
 
