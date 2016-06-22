@@ -44,12 +44,12 @@ Installation
 
     .. code-block:: bash
 
-        #git clone $(eval echo https://$(read -p "Gitub username: " gu; echo $gu)@github.com/demis001/raslpipe.git)
-        git clone https://github.com/demis001/raslpipe.git
+        wget https://github.com/demis001/raslpipe/archive/v1.2-alpha.tar.gz -O- | tar xzf -
+        #git clone https://github.com/demis001/raslpipe.git
         
     .. code-block:: bash
     
-        cd raslpipe
+        cd raslpipe-1.2-alpha
 
 
 #. Setup a `virtualenv <activate>` to install into and build documentation
