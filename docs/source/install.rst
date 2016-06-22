@@ -21,10 +21,10 @@ CentOS
     #> yum install blas-devel.x86_64 blas-static.x86_64  blas.x86_64   blas64.x86_64 lapack-devel.x86_64 lapack-static.x86_64  lapack.x86_64 lapack64.x86_64
     
 Ubuntu
-
 ------
 
 I have tested on Ubuntu 14.04. STAR aligner require GLIBCXX_3.4.20, if your gcc version is less than 4.9. STAR will not properly install. Make sure your gcc version using "gcc -v", if it is upgrade it. The code shown below.
+
 .. code-block:: bash
 
     #> apt-get install python-dev g++ libjpeg-dev pkg-config ghostscript git gfortran zlib1g-dev build-essential libopenblas-base libopenblas-dev liblapack-dev python-sphinx libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
@@ -38,7 +38,6 @@ Check the version:
    
 
 Installation
-
 ============
 
 #. Clone the repository
@@ -69,14 +68,14 @@ Installation
             source raslpipe/bin/activate
             pip install paver sphinx_rtd_theme
 
-    #. If you want to view/install the built html documentation
+    #. If you want to view/install the built html documentation (Optional)
 
         .. code-block:: bash
 
             paver doc_html
             firefox docs/build/html/install.html#id1
 
-    #. If you want to view/install the man page documentation
+    #. If you want to view/install the man page documentation (Optional)
 
         .. code-block:: bash
 
@@ -91,8 +90,7 @@ Installation
 
         python setup.py install
 
-#. Quick verify of a few thi
-   ngs
+#. Quick verify of a few things
 
     * See if required executables are available
 
@@ -110,6 +108,12 @@ Installation
     ```(raslpipe)``` in front of your prompt.
     
     If it is not activated:
+
+    Inputs:
+          --flowchart [file name to print the ps figure showing the workflow chart plot]
+          -o   [ Output directory name ]
+          -f   [directory name that contain 'SampleName_wellInfo_*.fastq' files]
+          -p [Manifest csv vile that contains the probe information, see the format from test data]
     
     .. code-block:: bash
     
