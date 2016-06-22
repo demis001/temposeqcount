@@ -267,7 +267,7 @@ def download_compile_help2man(options):
         sh('cd %s; wget %s;tar -xzvf help2man-1.43.3.tar.gz; cd help2man-1.43.3; ./configure CC="cc" --prefix=%s;make;make install' %(sdir,url,src))
 
 @task
-@needs('download_compile_help2man', 'download_compile_textinfo')
+#@needs('download_compile_help2man', 'download_compile_textinfo')
 def download_compile_libtool(options):
     """installs libtool, needed by graphviz ... """
     libtoolbin=join(sys.prefix,'bin','libtool')
@@ -280,7 +280,7 @@ def download_compile_libtool(options):
         sh('(cd %s; wget %s; tar -xzvf libtool-2.4.tar.gz;cd libtool-2.4;./configure CC="cc" --prefix=%s/libtool-2.4;make;make install)' %(sdir,url, sdir))
 
 @task
-@needs('download_compile_libtool')
+#@needs('download_compile_libtool')
 def download_compile_graphviz(options):
     """installs the current package"""
     graphvizbin=join(sys.prefix,'bin','dot')
@@ -454,7 +454,7 @@ def install_dependencies():
 
 @task
 #@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'in)
-@needs('installggplot','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_graphviz')
+@needs('installggplot','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_help2man', 'download_compile_textinfo','download_compile_libtool','download_compile_graphviz')
 def install_other_dependencies():
     pass
 
