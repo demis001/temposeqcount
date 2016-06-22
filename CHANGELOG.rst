@@ -1,21 +1,18 @@
 Changelog
 =========
 
-Version 1.0
+Version 1.2-alpha
 -----------
 
-* Added STAR as option for alignment
-* Added fastqc as option to generate quality matrix
-* Added draft documentation
-* Added instructions on how to create install the database
-* Added Plate and well barcode splitting 
-* Added raslpipe_cli to verify script to make sure everything installed and added the docs in installation seciton
+* Added STAR alignment
+* Added the capacity to process to process multiple `fastq.gz` file in single run
+* Add the capacity to accept the probe information manifest file and recreate the indexed probe and pseudo gtf file
+* Added index the genome on the fly from the probe sequences
+* Added to generate alignment stat bar plot
+* Added the capacity to generate summary alignment stat
+* Added detail docs
 * Fixed typo in installation.rst
-* Implemented to get draft count matrix
-* Fixed issue where fastqc was not logging stderr to analysis_quaility.log
+* Tested on Ubuntu 14.04 and CentOS 7
+* Fixed issue with ggplot
 
 
-Version 1.1
------------
-
-* Work in progress. This application is still in development phase!!!!!!!
