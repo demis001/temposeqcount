@@ -10,7 +10,7 @@ import os.path
 from pkg_resources import resource_filename, resource_stream
 from pandas import DataFrame
 import pandas as pd
-from tabulate import tabulate
+#from tabulate import tabulate
 import pandas as pd
 from pandas import DataFrame
 
