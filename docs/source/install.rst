@@ -110,10 +110,11 @@ Installation
     If it is not activated:
 
     Inputs:
-          --flowchart [file name to print the ps figure showing the workflow chart plot]
+    .. code-block:: bash
+          --flowchart [file name to print the ps figure showing the workflow chart]
           -o   [ Output directory name ]
-          -f   [directory name that contain 'SampleName_wellInfo_*.fastq' files]
-          -p [Manifest csv vile that contains the probe information, see the format from test data]
+          -f   [directory name that contain `SampleName_wellInfo_*.fastq` files]
+          -p [Manifest csv file that contains the probe information, see the format from test data]
     
     .. code-block:: bash
     
