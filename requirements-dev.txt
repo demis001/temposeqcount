@@ -31,7 +31,7 @@ bunch==1.0.1
 python-dateutil
 #matplotlib
 pandas
-tabulate
+#tabulate
 #biopython
 #pysam
 #graphviz
