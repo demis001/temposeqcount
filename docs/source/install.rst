@@ -39,7 +39,7 @@ Check the version:
 Ubuntu 16.04 LTS (Xenial Xerus) 
 -------------------------------
 
-.. code-block::bash
+.. code-block:: bash
 
    #>  sudo apt-get install python-dev g++ libjpeg-dev pkg-config ghostscript git gfortran zlib1g-dev build-essential libopenblas-base libopenblas-dev liblapack-dev python-sphinx libncurses5  libncurses5-dev libpng12-dev libfreetype6-de  v
 
