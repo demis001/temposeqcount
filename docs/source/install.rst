@@ -20,14 +20,14 @@ CentOS
     #> yum groupinstall Development Tools
     #> yum install blas-devel.x86_64 blas-static.x86_64  blas.x86_64   blas64.x86_64 lapack-devel.x86_64 lapack-static.x86_64  lapack.x86_64 lapack64.x86_64
     
-Ubuntu
-------
+Ubuntu 14.04
+------------
 
 I have tested on Ubuntu 14.04. STAR aligner require GLIBCXX_3.4.20, if your gcc version is less than 4.9. STAR will not properly install. Make sure your gcc version using "gcc -v", if it is upgrade it. The code shown below.
 
 .. code-block:: bash
 
-    #> apt-get install python-dev g++ libjpeg-dev pkg-config ghostscript git gfortran zlib1g-dev build-essential libopenblas-base libopenblas-dev liblapack-dev python-sphinx libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
+    #> sudo apt-get install python-dev g++ libjpeg-dev pkg-config ghostscript git gfortran zlib1g-dev build-essential libopenblas-base libopenblas-dev liblapack-dev python-sphinx libncurses5	libncurses5-dev libpng12-dev libfreetype6-dev
     #> sudo add-apt-repository ppa:ubuntu-toolchain-r/testsudo && sudo apt-get update && sudo apt-get install gcc-5
 
 Check the version:
@@ -36,6 +36,13 @@ Check the version:
 
     #> strings /usr/lib/x86_64-linux-gnu/libstdc++.so.6 | grep GLIBCXX
    
+Ubuntu 16.04 LTS (Xenial Xerus) 
+-------------------------------
+
+.. code-block::bash
+
+   #>  sudo apt-get install python-dev g++ libjpeg-dev pkg-config ghostscript git gfortran zlib1g-dev build-essential libopenblas-base libopenblas-dev liblapack-dev python-sphinx libncurses5  libncurses5-dev libpng12-dev libfreetype6-de  v
+
 
 Installation
 ============
