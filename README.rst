@@ -38,7 +38,7 @@ Supported Python Versions
 The Project  supports the following versions out of the box:
 
 * Python 2.6, 2.7
-* Tested on Ubuntu 14.04 and CentOS-7
+* Tested on Ubuntu 14.04, 15, 16.04 and CentOS-7
 
 Application routine template
 ----------------------------
@@ -60,7 +60,7 @@ Please report any bugs or requests that you have using the GitHub issue tracker!
 Development
 ===========
 
-This command line would just test Python 2.7.
+I have tested on  Python 2.7.
 
 Authors
 =======
