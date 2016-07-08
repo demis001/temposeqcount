@@ -132,6 +132,7 @@ Installation
         # get detail help using 
         raslpipe -h
 
+    Run test data and inspect the result folder:
 
     .. code-block:: bash
 
