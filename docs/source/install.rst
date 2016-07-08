@@ -117,10 +117,11 @@ Installation
     If it is not activated:
 
     Inputs:
-         * --flowchart [file name to print the ps figure showing the workflow chart]
-         * -o   [ Output directory name ]
-         * -f  [Directory that contain `*.fastq.gz files`, rename your fastq files to `*_fastq.gz` for the script to work ]
-         * -p [`*_manifest.csv` file that contains the probe information, see the format from test data]
+
+         * `--flowchart` [file name to print the ps figure showing the workflow chart]
+         * `-o`   [ Output directory name ]
+         * `-f`  [Directory that contain `*.fastq.gz files`, rename your fastq files to `*_fastq.gz` for the script to work ]
+         * `-p` [`*_manifest.csv` file that contains the probe information, see the format from test data]
     
     .. code-block:: bash
     
