@@ -118,7 +118,7 @@ Installation
 
     .. code-block:: bash
  
-    ¦   source ~/raslpipe/raslpipe/bin/activate 
+         source ~/raslpipe/raslpipe/bin/activate 
 
     Inputs:
 
