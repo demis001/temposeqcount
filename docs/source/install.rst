@@ -116,6 +116,10 @@ Installation
     
     If it is not activated:
 
+    .. code-block:: bash
+ 
+    ¦   source ~/raslpipe/raslpipe/bin/activate 
+
     Inputs:
 
          * `--flowchart` [file name to print the ps figure showing the workflow chart]
@@ -128,9 +132,6 @@ Installation
         # get detail help using 
         raslpipe -h
 
-    .. code-block:: bash
-    
-        source ~/raslpipe/raslpipe/bin/activate
 
     .. code-block:: bash
 
