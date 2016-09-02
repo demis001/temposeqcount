@@ -115,7 +115,8 @@ def index_db_file(input, output, cpuNum, gtfFile):
     totalProbes= runCommand(cmd, True)
     totalProbes = totalProbes[0].strip()
     print totalProbes
-    #scale_factor = np.min(14, np.log2(50)/2-1)
+    scale_factor = np.min(14, np.log2(50)/2-1)
+    print scale_factor
     cmds = [
         'STAR',
         '--runMode genomeGenerate',
