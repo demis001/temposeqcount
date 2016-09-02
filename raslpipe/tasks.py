@@ -103,7 +103,7 @@ def index_db_file(input, output, cpuNum, gtfFile):
     #print head
     seq = head[1].strip()
     seqLen = len(seq)
-    #print seqLen
+    print seqLen
     print input
     cmd = [
         'grep',
