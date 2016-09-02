@@ -99,17 +99,17 @@ def index_db_file(input, output, cpuNum):
     """Index the probe fastfile to use as db file"""
     with open(input) as myfile:
         head = [next(myfile) for x in xrange(2)]
-    print head
+    #print head
     seq = head[1].strip()
     seqLen = len(seq)
-    print seqLen
+    #print seqLen
     cmds = [
         'STAR',
         '--runMode genomeGenerate',
         '--genomeDir', output,
         '--genomeFastaFiles', input,
         '--runThreadN', str(cpuNum),
-        '--genomeSAindexNbases 2',
+        '--genomeSAindexNbases', str(seqLen),
 
     ]
     cmds = '  '.join(cmds)
