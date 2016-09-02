@@ -107,6 +107,8 @@ def indexGenomeFile(input, output):
     `input`: Input probes fasta file
     `output`: SAindex file to check the completion of STAR genome index
     """
+    print input
+    print output
     head,tail = split(output)
     base =  splitext(tail)[0]
     base = base + ".gtf"
