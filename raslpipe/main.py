@@ -111,7 +111,7 @@ def indexGenomeFile(input, output):
     base =  splitext(tail)[0]
     base = base + ".gtf"
     print base
-    gtfFile = join(projDir, "results", base)
+    gtfFile = join(proDir, "results", base)
     outputDir = proDir + "/result/Genome"
     print colored("Stage 4: Creating genome index file from the probe fasta file ....", "green")
     print input
