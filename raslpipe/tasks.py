@@ -10,6 +10,7 @@ import os.path
 from pkg_resources import resource_filename, resource_stream
 from pandas import DataFrame
 import pandas as pd
+import numpy as np
 #from tabulate import tabulate
 import pandas as pd
 from pandas import DataFrame
@@ -103,6 +104,10 @@ def index_db_file(input, output, cpuNum):
     seq = head[1].strip()
     seqLen = len(seq)
     #print seqLen
+    cmd = 'grep ">" input | wc -l'
+    totalProbes= runCommand(cmd, True)
+    print totalProbes
+    #scale_factor = np.min(14, np.log2(50)/2-1)
     cmds = [
         'STAR',
         '--runMode genomeGenerate',
