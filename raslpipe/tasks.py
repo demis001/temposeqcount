@@ -97,6 +97,9 @@ def create_gtf(input, output):
 
 def index_db_file(input, output, cpuNum):
     """Index the probe fastfile to use as db file"""
+    with open(input) as myfile:
+        head = [next(myfile) for x in xrange(2)]
+    print head
     cmds = [
         'STAR',
         '--runMode genomeGenerate',
@@ -201,6 +204,10 @@ def map_seq_to_probes(fastq, genomeDir, numCPU, outPrefix, gtfFile):
         '--outFileNamePrefix', outPrefix,
         '--outSAMtype BAM SortedByCoordinate',
         '--quantMode GeneCounts',
+        '--scoreDelOpen -10000',
+        '--scoreInsOpen -10000',
+        '--outFilterMismatchNmax 2',
+        '--outSAMunmapped Within',
         '--sjdbGTFfile', gtfFile,
         ' --genomeLoad NoSharedMemory',
     ]
