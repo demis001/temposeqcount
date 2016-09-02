@@ -96,7 +96,7 @@ def create_gtf(input, output):
     return
 
 
-def index_db_file(input, output, cpuNum):
+def index_db_file(input, output, cpuNum, gtfFile):
     """Index the probe fastfile to use as db file"""
     with open(input) as myfile:
         head = [next(myfile) for x in xrange(2)]
@@ -120,6 +120,8 @@ def index_db_file(input, output, cpuNum):
         '--runMode genomeGenerate',
         '--genomeDir', output,
         '--genomeFastaFiles', input,
+        '--sjdbGTFfile', gtfFile,
+        '--sjdbGTFfeatureExon exon',
         '--runThreadN', str(cpuNum),
         '--genomeSAindexNbases', str(seqLen),
 

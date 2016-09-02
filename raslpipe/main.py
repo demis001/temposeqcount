@@ -107,12 +107,17 @@ def indexGenomeFile(input, output):
     `input`: Input probes fasta file
     `output`: SAindex file to check the completion of STAR genome index
     """
+    head,tail = os.split(input)
+    base =  splitext(tail)[0]
+    base = base + ".gtf"
+    print base
+    gtfFile = join(projDir, "results", base)
     outputDir = proDir + "/result/Genome"
     print colored("Stage 4: Creating genome index file from the probe fasta file ....", "green")
     print input
     #print output
     #print cpuNum
-    result = tasks.index_db_file(input, outputDir, cpuNum)
+    result = tasks.index_db_file(input, outputDir, cpuNum, gtfFile)
     return result
 
 @graphviz(height=1.8, width=2, label="Map to\nprobes")
