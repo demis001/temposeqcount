@@ -107,13 +107,12 @@ def indexGenomeFile(input, output):
     `input`: Input probes fasta file
     `output`: SAindex file to check the completion of STAR genome index
     """
-    print input
-    print output
-    head,tail = split(output)
-    base =  splitext(tail)[0]
+    #print input
+    #print output
+    base =  splitext(input)[0]
     base = base + ".gtf"
     print base
-    gtfFile = join(proDir, "results", base)
+    gtfFile = base
     outputDir = proDir + "/result/Genome"
     print colored("Stage 4: Creating genome index file from the probe fasta file ....", "green")
     print input
