@@ -104,6 +104,7 @@ def index_db_file(input, output, cpuNum):
     seq = head[1].strip()
     seqLen = len(seq)
     #print seqLen
+    print input
     cmd = 'grep ">" input | wc -l'
     totalProbes= runCommand(cmd, True)
     print totalProbes
