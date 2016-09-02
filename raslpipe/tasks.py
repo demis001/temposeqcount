@@ -100,6 +100,9 @@ def index_db_file(input, output, cpuNum):
     with open(input) as myfile:
         head = [next(myfile) for x in xrange(2)]
     print head
+    seq = head[1].strip()
+    seqLen = len(seq)
+    print seqLen
     cmds = [
         'STAR',
         '--runMode genomeGenerate',
