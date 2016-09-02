@@ -105,7 +105,13 @@ def index_db_file(input, output, cpuNum):
     seqLen = len(seq)
     #print seqLen
     print input
-    cmd = 'grep ">" input | wc -l'
+    cmd = [
+        'grep',
+        '">"',
+        input,
+        '| wc -l',
+    ]
+    cmd = '  '.join(cmd)
     totalProbes= runCommand(cmd, True)
     print totalProbes
     #scale_factor = np.min(14, np.log2(50)/2-1)
