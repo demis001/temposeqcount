@@ -118,6 +118,7 @@ def index_db_file(input, output, cpuNum, gtfFile):
     genomeSize= int(seqLen)*int(totalProbes)
     print genomeSize
     scale_factor = np.fmin(14, np.log2(genomeSize)/2-1)
+    scale_factor = np.round(scale_factor).astype(int)
     print scale_factor
     cmds = [
         'STAR',
@@ -127,7 +128,7 @@ def index_db_file(input, output, cpuNum, gtfFile):
         '--sjdbGTFfile', gtfFile,
         '--sjdbGTFfeatureExon exon',
         '--runThreadN', str(cpuNum),
-        '--genomeSAindexNbases', str(seqLen),
+        '--genomeSAindexNbases', str(scale_factor),
 
     ]
     cmds = '  '.join(cmds)
