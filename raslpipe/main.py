@@ -8,7 +8,7 @@ import helpers
 from helpers import runCommand,isGzip
 from os.path import (
     join, expanduser, expandvars,
-    splitext, basename, dirname, exists
+    splitext,split, basename, dirname, exists
 )
 helpers.setup_shell_environment()
 import tasks
@@ -107,7 +107,7 @@ def indexGenomeFile(input, output):
     `input`: Input probes fasta file
     `output`: SAindex file to check the completion of STAR genome index
     """
-    head,tail = os.split(input)
+    head,tail = split(input)
     base =  splitext(tail)[0]
     base = base + ".gtf"
     print base
