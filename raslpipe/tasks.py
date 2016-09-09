@@ -87,7 +87,7 @@ def create_gtf(input, output):
                 line = line.strip()
                 probe_ID, Attenuation_Correction_Factor,Gene_Symbol,Probe_Sequence,Main_RefSeq,RefSeqs_Targeted,Distance_from_5_Prime_End_of_mRNA = line.split(",")
                 seqLen = len(Probe_Sequence)
-                gene = probe_ID +"\tprotein_coding\t"+ "gene\t"+   str(1) +"\t" +str(seqLen) + "\t.\t.\t.\t" + "gene_id " +'"' + probe_ID+'"; '+"gene_name"+' "'+Gene_Symbol+'";'+"transcript_id"+' "'+Gene_Symbol+'";\n'
+                gene = probe_ID +"\tprotein_coding\t"+ "gene\t"+   str(1) +"\t" +str(seqLen) + "\t.\t.\t.\t" + "gene_id " +'"' + probe_ID+'"; '+"transcript_id"+' "'+probe_ID+'";\n'
                 #transcript = probe_ID +"\tprocessed_transcript\t"+ "transcript\t"  + str(1) +"\t" +str(seqLen) + "\t.\t.\t.\t" + "gene_id " +'"' + probe_ID+'"; '+"transcript_id"+' "'+probe_ID+'";'  + "gene_name " + '"'+Gene_Symbol+'";\n'
                 #exon = probe_ID +"\tprocessed_transcript\t"+ "exon\t"+  str(1) +"\t" +str(seqLen) + "\t.\t.\t.\t" + "gene_id "+ '"' + probe_ID+'"; '+"transcript_id"+' "'+probe_ID+'"; '+'exon_number "1"; ' + "gene_name " + '"'+Gene_Symbol+'";\n'
                 out.write(gene)
