@@ -37,5 +37,6 @@ pandas
 #graphviz
 sphinx_rtd_theme
 image
+HTSeq
 #ggplot
 #git+https://github.com/yhat/ggplot
