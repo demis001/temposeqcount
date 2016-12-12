@@ -460,12 +460,12 @@ def install_other_dependencies():
 
 @task
 def install_python_dependencies():
-    sh('pip install -r requirements-dev.txt  --download-cache raslpipe/download/.pip_cache')
+    sh('pip install -r requirements-dev.txt  --cache-dir raslpipe/download/.pip_cache')
 
 @task
 def install_python_dependencies_nodeps():
     """Install python package without installing dependencies"""
-    sh('pip install -r requirements_nodeps.txt  --download-cache raslpipe/download/.pip_cache')
+    sh('pip install -r requirements_nodeps.txt  --cache-dir raslpipe/download/.pip_cache')
 
 @task
 @needs('install_dependencies')
