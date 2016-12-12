@@ -215,7 +215,28 @@ def combine_wellsplit_logfiles(input_file_names,output_file):
     return
 
 
-def map_seq_to_probes(fastq, genomeDir, numCPU, outPrefix, gtfFile):
+#def map_seq_to_probes(fastq, genomeDir, numCPU, outPrefix, gtfFile):
+    #"""Map the sequence to the probes genome file using STAR"""
+    #cmds = [
+        #'STAR',
+        #'--genomeDir', genomeDir,
+        #'--readFilesIn', fastq,
+        #'--readFilesCommand zcat',
+        #'--runThreadN ', str(numCPU),
+        #'--outFileNamePrefix', outPrefix,
+        #'--outSAMtype BAM SortedByCoordinate',
+        #'--quantMode GeneCounts',
+        #'--scoreDelOpen -10000',
+        #'--scoreInsOpen -10000',
+        #'--outFilterMismatchNmax 2',
+        #'--outSAMunmapped Within',
+        #'--sjdbGTFfile', gtfFile,
+        #' --genomeLoad NoSharedMemory',
+    #]
+    #cmds = '  '.join(cmds)
+    #runCommand(cmds, True)
+
+def map_seq_to_probes(fastq, genomeDir, numCPU, outPrefix):
     """Map the sequence to the probes genome file using STAR"""
     cmds = [
         'STAR',
@@ -224,14 +245,33 @@ def map_seq_to_probes(fastq, genomeDir, numCPU, outPrefix, gtfFile):
         '--readFilesCommand zcat',
         '--runThreadN ', str(numCPU),
         '--outFileNamePrefix', outPrefix,
-        '--outSAMtype BAM SortedByCoordinate',
-        '--quantMode GeneCounts',
+        '--outSAMtype SAM',
         '--scoreDelOpen -10000',
         '--scoreInsOpen -10000',
         '--outFilterMismatchNmax 2',
         '--outSAMunmapped Within',
-        '--sjdbGTFfile', gtfFile,
+        '--outSAMattributes AS nM',
         ' --genomeLoad NoSharedMemory',
+    ]
+    cmds = '  '.join(cmds)
+    runCommand(cmds, True)
+
+def count_mapped(bamFile, outfile, gtfFile):
+    """count mapped reads mapped to genome features
+    -m union, intersection-nonempty
+    """
+    cmds = [
+        'htseq-count',
+        '-f sam',
+        '-s no',
+        '-a 10',
+        '-t exon',
+        '-i gene_id',
+        '-m intersection-nonempty',
+        bamFile,
+        gtfFile,
+        '>', outfile,
+
     ]
     cmds = '  '.join(cmds)
     runCommand(cmds, True)
@@ -256,20 +296,6 @@ def countReadsMappedToProbes(bamindex, outfile):
     cmds = "samtools idxstats %s > %s " %(bamindex, outfile)
     runCommand(cmds, True)
 
-def formatCount(input_file, output_file):
-    """Combine the log files from the well splitting routine"""
-    with open(output_file, "w") as oo, open(input_file, "r") as ii:
-        #oo.write("Plate_Barcode\tWell_Barcode\tCount\tLocation\n")
-        for line in ii:
-            if line.startswith("N_"):
-                next
-            else:
-                lines = line.split("\t")
-                newline = lines[0] +"\t" + lines[1] + "\n"
-                oo.write(newline)
-    return
-
-
 def combineCount(input_file_names, output_file):
     """Combine Count files, merge multiple count files to a single dataframe"""
     # get string from file name
@@ -277,7 +303,7 @@ def combineCount(input_file_names, output_file):
     for filename in input_file_names:
         fileN = os.path.basename(filename)
         records = fileN.split("_")
-        sampleName = records[0] + "_" + records[1] #A11C_S22
+        sampleName = records[0] + "_" + records[1] + "_" + records[2] #A11C_S22_L001
         ids = sampleName
         count = ids
         df = pd.read_table(filename, sep= '\t', names=["Genes",count]).set_index("Genes")
@@ -291,6 +317,16 @@ def combineCount(input_file_names, output_file):
     merged.to_csv(output_file, index=True)
     return
 
+def formatCount(input_file, output_file):
+    """Combine the log files from the well splitting routine"""
+    with open(output_file, "w") as oo, open(input_file, "r") as ii:
+        #oo.write("Plate_Barcode\tWell_Barcode\tCount\tLocation\n")
+        for line in ii:
+            if line.startswith("_"):
+                next
+            else:
+                oo.write(line)
+    return
 def alignmentSummary(input_file_name, output_file_name):
     """Generate alignment summary alignmentSummary"""
     with open(output_file_name, 'w') as oo, open(input_file_name, 'r') as ii:

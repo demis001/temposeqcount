@@ -30,6 +30,7 @@ termcolor
 bunch==1.0.1
 python-dateutil
 #matplotlib
+numpy
 pandas
 #tabulate
 #biopython
@@ -38,5 +39,6 @@ pandas
 sphinx_rtd_theme
 image
 HTSeq
+PySam
 #ggplot
 #git+https://github.com/yhat/ggplot

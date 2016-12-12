@@ -134,55 +134,87 @@ def map_to_probes(fastq, output):
     outfile = join(tempDir, outfile)
     suf = splitext(outfile)[0]
     outPrefix = os.path.abspath(suf)
-    import re
-    p=re.match(r'(.*)_manifest.csv', probFile, re.M|re.I)
-    gtfF = p.group(1) + ".gtf"
-    gtfFile = join(resultDir,gtfF)
     print tasks.comment()
     print colored("Stage 5: Map sequence fastq file to the indexed genome file ... ", "green")
     print fastq
     print output
     print genomeDir
     print outPrefix
+    print tasks.comment()
+    result = tasks.map_seq_to_probes(fastq, genomeDir, cpuNum, outPrefix)
+    return result
+
+@graphviz(height=1.8, width=2, label="Count Mapped\nprobes")
+@follows(map_to_probes)
+@transform(join(tempDir, "*fastqAligned.out.sam"), suffix(".sam"),  ".count.txt")
+def count_mapped_reads(bamFile, outfile):
+    """Coun the mapped sequence to the genome featur5e
+    `bamFile`: A bam alignment file
+    `outfile`: Count txt file
+    """
+    import re
+    p=re.match(r'(.*)_manifest.csv', probFile, re.M|re.I)
+    gtfF = p.group(1) + ".gtf"
+    gtfFile = join(resultDir,gtfF)
+    print tasks.comment()
+    print colored("Stage 6: Count Mapped file that overlap with genome feature ... ", "green")
+    print bamFile
     print gtfFile
     print tasks.comment()
-    result = tasks.map_seq_to_probes(fastq, genomeDir, cpuNum, outPrefix, gtfFile)
+    result = tasks.count_mapped(bamFile, outfile, gtfFile)
     return result
-
-@graphviz(height=1.8, width=2, label="Format\ncount data")
-@follows(map_to_probes)
-@transform(join(tempDir, "*fastqReadsPerGene.out.tab"), formatter(".tab"), ".txt")
-def format_count(input,output):
-    """Prepare the count file to merge to  a single file
-    `input`: Count file from previous stage (*fastqReadsPerGene.out.tab)
-    `output`: Formatted *.txt file with the same file name
-    """
-    outfile = basename(input)
-    out_suffix = splitext(outfile)[0]
-    out_file_name = out_suffix + output
-    out_file_name = join(tempDir, out_file_name)
-    print tasks.comment()
-    print colored("Stage 6: Formatting count file ... ", "green")
-    print input
-    print out_file_name
-    print tasks.comment()
-    result = tasks.formatCount(input,out_file_name)
-    return result
+#@graphviz(height=1.8, width=2, label="Format\ncount data")
+#@follows(map_to_probes)
+#@transform(join(tempDir, "*fastqReadsPerGene.out.tab"), formatter(".tab"), ".txt")
+#def format_count(input,output):
+    #"""Prepare the count file to merge to  a single file
+    #`input`: Count file from previous stage (*fastqReadsPerGene.out.tab)
+    #`output`: Formatted *.txt file with the same file name
+    #"""
+    #outfile = basename(input)
+    #out_suffix = splitext(outfile)[0]
+    #out_file_name = out_suffix + output
+    #out_file_name = join(tempDir, out_file_name)
+    #print tasks.comment()
+    #print colored("Stage 6: Formatting count file ... ", "green")
+    #print input
+    #print out_file_name
+    #print tasks.comment()
+    #result = tasks.formatCount(input,out_file_name)
+    #return result
 
 @graphviz(height=1.8, width=2, label="Combine\ncount data")
-@follows(format_count)
-@collate(join(tempDir, "*fastqReadsPerGene.out.txt"), formatter(".txt"), resultDir + "DATA_COUNT_countcombined.csv")
+@follows(count_mapped_reads)
+#@collate(join(tempDir, "*sortedByCoord.out.count.txt"), formatter(".txt"), resultDir + "DATA_COUNT_countcombined.csv")
+@collate(join(tempDir, "*fastqAligned.out.count.txt"), formatter(".txt"), resultDir + "DATA_COUNT_countcombined.csv")
 def combine_count_data(input, output):
     """Combine count files
     `input`: Formatted *.out.txt count files
     `output`: A single summary count csv file nammed 'DATA_COUNT_countcombined.csv' under project dir
     """
     print tasks.comment()
-    #print input
-    #print output
+    print input
+    print output
     print colored("Stage 7: Combining count data ...", "green")
     print tasks.comment()
     result = tasks.combineCount(input, output)
+    return result
+
+@graphviz(height=1.8, width=2, label="Format\ncount data")
+@follows(combine_count_data)
+@follows(combine_count_data)
+@transform(combine_count_data, suffix(".csv"), "_formated.csv")
+def format_count(input,output):
+    """Format count csv file
+    `input`: csv file
+    `output`: Formatted *.csv file
+    """
+    print tasks.comment()
+    print colored("Stage 8: Formatting count file ... ", "green")
+    print input
+    print output
+    print tasks.comment()
+    result = tasks.formatCount(input,output)
     return result
 
 @graphviz(height=1.8, width=2, label="Alignment\nSummary")
@@ -267,9 +299,7 @@ def main():
     pipeline_printout_graph('summary_pipeline_stages_to_run.ps', 'ps', tasks_torun, user_colour_scheme={"colour_scheme_index": 6},
                             no_key_legend=False, pipeline_name="TempO-seq Analysis", size=(11, 8), dpi = 30,
                             forcedtorun_tasks = [indexGenomeFile, combine_count_data],draw_vertically=True, ignore_upstream_of_target=False)
-    pipeline_run(["prepare_analysis", "prepareDB_file",'create_gtf_file', 'indexGenomeFile', 'map_to_probes', 'format_count',
-                  'combine_count_data', 'alignment_summary', 'combine_alignment_summary','plot_alignment_summary'],
-                 verbose = 1, multiprocess = cpuNum)
+    pipeline_run(["prepare_analysis", "prepareDB_file",'create_gtf_file', 'indexGenomeFile', 'map_to_probes','count_mapped_reads', 'combine_count_data', 'format_count', 'alignment_summary','combine_alignment_summary','plot_alignment_summary'],verbose = 1, multiprocess = cpuNum)
     print "....................." + resultDir
     tasks.comment()
     psfile = options.flowchart
