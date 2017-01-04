@@ -81,7 +81,7 @@ Installation
         .. code-block:: bash
 
             paver doc_html
-            firefox docs/build/html/install.html#id1
+            firefox docs/build/html/install.html#id1 &
 
     #. If you want to view/install the man page documentation (Optional)
 

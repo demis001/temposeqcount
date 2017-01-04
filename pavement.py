@@ -131,6 +131,12 @@ def bootstrap(options):
     call_task("paver.virtualenv.boostrap")
 
 @task
+  def make_download_dir(options):
+      currwd = os.getcwd()
+      sdir = path(currwd) / options.star.sdir
+      sh('mkdir -p %s' % (sdir))
+
+@task
 def download_compile_star(options):
     """installs the current package"""
     starbin=join(sys.prefix,'bin','STAR')
@@ -454,7 +460,7 @@ def install_dependencies():
 
 @task
 #@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'in)
-@needs('installggplot','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_help2man', 'download_compile_textinfo','download_compile_libtool','download_compile_graphviz')
+@needs('make_download_dir','installggplot','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_help2man', 'download_compile_textinfo','download_compile_libtool','download_compile_graphviz')
 def install_other_dependencies():
     pass
 
