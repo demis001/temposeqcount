@@ -51,12 +51,13 @@ Installation
 
     .. code-block:: bash
 
-        wget https://github.com/demis001/raslpipe/archive/v1.2-alpha.tar.gz -O- | tar xzf -
-        #git clone https://github.com/demis001/raslpipe.git
+        #wget https://github.com/demis001/raslpipe/archive/v1.2-alpha.tar.gz -O- | tar xzf -
+        git clone https://github.com/demis001/raslpipe.git
         
     .. code-block:: bash
     
-        cd raslpipe-1.2-alpha
+        #cd raslpipe-1.2-alpha
+        cd raslpipe
 
 
 #. Setup a `virtualenv <activate>` to install into and build documentation
@@ -65,8 +66,8 @@ Installation
 
         .. code-block:: bash
 
-            wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-12.0.tar.gz -O- | tar xzf -
-            python virtualenv-12.0/virtualenv.py raslpipe
+            wget --no-check-certificate https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.15.0.tar.gz#md5=07e09df0adfca0b2d487e39a4bf2270a -O- | tar xzf -
+            python virtualenv-1.15.0/virtualenv.py raslpipe
 
     #. Activate the virtualenv to install everything into
 
