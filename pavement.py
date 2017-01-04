@@ -131,7 +131,7 @@ def bootstrap(options):
     call_task("paver.virtualenv.boostrap")
 
 @task
-  def make_download_dir(options):
+def make_download_dir(options):
       currwd = os.getcwd()
       sdir = path(currwd) / options.star.sdir
       sh('mkdir -p %s' % (sdir))
