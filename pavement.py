@@ -460,12 +460,20 @@ def install_other_dependencies():
 
 @task
 def install_python_dependencies():
-    sh('pip install -r requirements-dev.txt  --cache-dir raslpipe/download/.pip_cache')
+    import pip
+    if pip.__version__ > 6.0:
+        sh('pip install -r requirements-dev.txt  --no-cache-dir')
+    else:
+        sh('pip install -r requirements-dev.txt  --cache-dir raslpipe/download/.pip_cache')
 
 @task
 def install_python_dependencies_nodeps():
     """Install python package without installing dependencies"""
-    sh('pip install -r requirements_nodeps.txt  --cache-dir raslpipe/download/.pip_cache')
+    import pip
+    if (pip.__version__ > 6.0):
+        sh('pip install -r requirements_nodeps.txt  --no-cache-dir')
+    else:
+        sh('pip install -r requirements_nodeps.txt  --cache-dir raslpipe/download/.pip_cache')
 
 @task
 @needs('install_dependencies')
