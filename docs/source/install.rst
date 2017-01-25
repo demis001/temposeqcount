@@ -66,19 +66,19 @@ Installation
 
             make install 
 
-    #. To install docs (optional)
 
-        .. code-block:: bash
-            
-            make docs
-            
-
-    #. Activate the virtualenv to install everything into
+    #. Activate the virtualenv whenever you went to run temposeqcount_cli
 
         .. code-block:: bash
 
             source temposeqcount/bin/activate
-            pip install paver sphinx_rtd_theme
+
+     #. To install docs (optional)
+        
+        .. code-block:: bash
+           
+            paver doc_html && paver doc_man &&  mkdir -p temposeqcount/man/man1
+            cp docs/build/man/* temposeqcount/man/man1
 
     #. If you want to view  the built html documentation (Optional)
 
@@ -105,7 +105,7 @@ Installation
 
 
             
-#. Optional: Run a test dataset
+#. Optional: Run a test dataset (make sure the virtualenv is active, else activate it as follows)
 
     Anytime you run the pipeline you need to activate the pipeline first. If the pipeline is activated you will see 
     ```(temposeqcount)``` in front of your prompt.
@@ -126,7 +126,7 @@ Installation
     .. code-block:: bash
 
         # get detail help using 
-        temposeqcount -h
+        temposeqcount_cli -h
 
     Run test data and inspect the result folder:
 

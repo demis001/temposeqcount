@@ -1,11 +1,11 @@
-====================
+=========================
 Running the temposeqcount
-====================
+=========================
 
 .. _activate:
 
 Activating the temposeqcount
-=======================
+============================
 
 You must always ensure that the virtualenv that you installed into during the
 :doc:`install` is activated prior to running any portion of the pipeline.

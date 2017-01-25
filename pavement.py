@@ -155,7 +155,6 @@ def installggplot():
     try:
         import ggplot
     except ImportError:
-        sh('pip uninstall ggplot')
         cmd = 'pip install git+https://github.com/yhat/ggplot'
         sh(cmd)
 

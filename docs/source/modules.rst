@@ -1,5 +1,5 @@
 temposeqcount
-==========
+=============
 
 .. toctree::
    :maxdepth: 4
