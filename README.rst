@@ -43,7 +43,7 @@ The Project  supports the following versions out of the box:
 Application routine template
 ----------------------------
 
-.. image:: raslpip_stages_to_run.png
+.. image:: docs/source/_static/images/raslpip_stages_to_run.png
 
 
 Licenses
