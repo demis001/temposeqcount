@@ -278,15 +278,14 @@ setup_dict = dict(
     },
     # These all get copied to our installation's bin folder for us
     scripts = [
-        'temposeqcount/lib/fastx_toolkit/bin/fastq_masker',
         'temposeqcount/download/seqtk/seqtk',
         'temposeqcount/download/samtools/samtools',
         'temposeqcount/download/help2man-1.43.3/help2man',
-        'temposeqcount/download/graphviz-2.38.0/bin/dot',
+        'temposeqcount/download/graphviz-2.41.20170103.1755/bin/dot',
     ] + glob('temposeqcount/lib/fastx_toolkit/bin/fast*') +
         glob('temposeqcount/download/libtool-2.4/bin/lib*') +
         glob('temposeqcount/download/texinfo-6.1/bin/*' ) +
-        glob('temposeqcount/download/graphviz-2.38.0/bin/*'),
+        glob('temposeqcount/download/graphviz-2.41.20170103.1755/bin/*'),
     package_data = {
         'temposeqcount': ['files/*'],
 

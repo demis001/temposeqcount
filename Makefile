@@ -20,8 +20,8 @@ lint:
 
 install:
 	python ./virtualenv-15.1.0/virtualenv.py temposeqcount && \
-	. rnaseqpipe/bin/activate && \
-	pip install paver && \
+	. temposeqcount/bin/activate && \
+	pip install -U Paver && \
 	python setup.py install
 
 	

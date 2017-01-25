@@ -98,7 +98,7 @@ options(setup=setup_dict,
         ),
         graphviz=Bunch(
         sdir=path('temposeqcount/download'),
-        url='http://ftp.osuosl.org/pub/blfs/conglomeration/graphviz/graphviz-2.38.0.tar.gz'
+        url='https://github.com/ellson/graphviz/releases/download/Nightly/graphviz-2.41.20170103.1755.tar.gz'
         ),
         virtualenv=Bunch(
         packages_to_install=[],
@@ -155,6 +155,7 @@ def installggplot():
     try:
         import ggplot
     except ImportError:
+        sh('pip uninstall ggplot')
         cmd = 'pip install git+https://github.com/yhat/ggplot'
         sh(cmd)
 
@@ -250,8 +251,9 @@ def install_rpy2(options):
 @task
 def download_compile_textinfo(options):
     """installs the textinfo, required by graphviz"""
-    makeinfobin=join(sys.prefix,'bin','makeinfo')
-    if not exists(makeinfobin):
+    makeinfobin=join(sys.prefix, 'bin','makeinfo')
+    srcfile =join(sys.prefix, "download",'texinfo-6.1.tar.gz' )
+    if not exists(makeinfobin) and  not exists(srcfile):
         info("Installing textinfo...")
         currwd = os.getcwd()
         sdir = path(currwd) / options.textinfo.sdir
@@ -262,8 +264,10 @@ def download_compile_textinfo(options):
 @task
 def download_compile_help2man(options):
     """installs the help2man, required by graphviz"""
-    help2manbin=join(sys.prefix,'bin','help2man')
-    if not exists(help2manbin):
+    help2manbin=join(sys.prefix, 'bin','help2man')
+    info(help2manbin)
+    srcfile =join(sys.prefix, "download",'help2man-1.43.3.tar.gz')
+    if not exists(help2manbin) and not exists(srcfile):
         info("Installing help2man...")
         currwd = os.getcwd()
         sdir = path(currwd) / options.help2man.sdir
@@ -276,8 +280,9 @@ def download_compile_help2man(options):
 #@needs('download_compile_help2man', 'download_compile_textinfo')
 def download_compile_libtool(options):
     """installs libtool, needed by graphviz ... """
-    libtoolbin=join(sys.prefix,'bin','libtool')
-    if not exists(libtoolbin):
+    libtoolbin=join(sys.prefix, 'bin','libtool')
+    srcfile =join(sys.prefix, "download",'libtool-2.4.tar.gz')
+    if not exists(libtoolbin) and not exists(srcfile):
         info("Installing libtool, needed by graphviz ...")
         currwd = os.getcwd()
         sdir = path(currwd)  / options.libtool.sdir
@@ -290,14 +295,14 @@ def download_compile_libtool(options):
 def download_compile_graphviz(options):
     """installs the current package"""
     graphvizbin=join(sys.prefix,'bin','dot')
-    url = options.graphviz.url
+    currwd=os.getcwd()
+    ssdir =path(currwd) / options.graphviz.sdir / "graphviz-2.41.20170103.1755"
     info(graphvizbin)
     if not exists(graphvizbin):
         info("Installing graphviz...")
-        currwd=os.getcwd()
-        sdir =path(currwd) / options.graphviz.sdir
-        info(sdir)
-        sh('(cd %s;wget %s -O- | tar xzf -; cd graphviz-2.38.0;./configure --prefix=%s/graphviz-2.38.0;make;make install)' %(sdir,url,sdir))
+        #sdir =path(currwd) / options.graphviz.sdir
+        info(ssdir)
+        sh('(cd %s;rm -rf %s; wget %s -O- | tar xzf -;cd  graphviz-2.41.20170103.1755;./configure --prefix=%s;make;make install)' %(options.graphviz.sdir,ssdir,options.graphviz.url,ssdir))
 #export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/data/jimaprogramming/python/temposeqcount/temposeqcount/lib/R-3.2.3/lib64/R/lib/
 
 @task
