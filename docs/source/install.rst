@@ -51,23 +51,27 @@ Installation
 
     .. code-block:: bash
 
-        #wget https://github.com/demis001/temposeqcount/archive/v1.2-alpha.tar.gz -O- | tar xzf -
         git clone https://github.com/demis001/temposeqcount.git
         
     .. code-block:: bash
     
-        #cd temposeqcount-1.2-alpha
         cd temposeqcount
 
 
 #. Setup a `virtualenv <activate>` to install into and build documentation
 
-    #. Install virtualenv python environment
+    #. Install temposeqcount in a virtualenv python environment
 
         .. code-block:: bash
 
-            wget https://pypi.python.org/packages/d4/0c/9840c08189e030873387a73b90ada981885010dd9aea134d6de30cd24cb8/virtualenv-15.1.0.tar.gz#md5=44e19f4134906fe2d75124427dc9b716 -O- | tar xzf -
-            python virtualenv-15.1.0/virtualenv.py temposeqcount
+            make install 
+
+    #. To install docs (optional)
+
+        .. code-block:: bash
+            
+            make docs
+            
 
     #. Activate the virtualenv to install everything into
 
@@ -76,27 +80,18 @@ Installation
             source temposeqcount/bin/activate
             pip install paver sphinx_rtd_theme
 
-    #. If you want to view/install the built html documentation (Optional)
+    #. If you want to view  the built html documentation (Optional)
 
         .. code-block:: bash
 
-            paver doc_html
             firefox docs/build/html/install.html#id1 &
 
     #. If you want to view/install the man page documentation (Optional)
 
         .. code-block:: bash
 
-            paver doc_man
-            mkdir -p temposeqcount/man/man1
-            cp docs/build/man/* temposeqcount/man/man1
             man temposeqcount
 
-#. Install the pipeline into the virtualenv
-
-    .. code-block:: bash
-
-        python setup.py install
 
 #. Quick verify of a few things
 

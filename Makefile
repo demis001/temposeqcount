@@ -21,8 +21,13 @@ lint:
 install:
 	python ./virtualenv-15.1.0/virtualenv.py temposeqcount && \
 	. temposeqcount/bin/activate && \
-	pip install -U Paver && \
+	pip install -U Paver sphinx_rtd_theme && \
 	python setup.py install
+docs:
+	paver doc_html && \
+	paver doc_man && \
+	mkdir -p temposeqcount/man/man1 && \
+	cp docs/build/man/* temposeqcount/man/man1
 
 	
 

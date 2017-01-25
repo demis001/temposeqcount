@@ -1,5 +1,5 @@
 ======================
-pathdiscov_cli
+temposeqcount_cli
 ======================
 
 See :doc:`../analysis`
