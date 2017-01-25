@@ -38,16 +38,16 @@ except ImportError:
 sys.path.insert(0, os.path.abspath('.'))
 
 ## Constants
-CODE_DIRECTORY = 'raslpipe'
+CODE_DIRECTORY = 'temposeqcount'
 DOCS_DIRECTORY = 'docs'
 TESTS_DIRECTORY = 'tests'
 PYTEST_FLAGS = ['--doctest-modules']
 
 # Import metadata. Normally this would just be:
 #
-#     from raslpipe import metadata
+#     from temposeqcount import metadata
 #
-# However, when we do this, we also import `raslpipe/__init__.py'. If this
+# However, when we do this, we also import `temposeqcount/__init__.py'. If this
 # imports names from some other modules and these modules have third-party
 # dependencies that need installing (which happens after this file is run), the
 # script will crash. What we do instead is to load the metadata module by path
@@ -269,26 +269,26 @@ setup_dict = dict(
     zip_safe=False,  # don't use eggs
     entry_points={
         'console_scripts': [
-            'raslpipe_cli = raslpipe.main:main'
+            'temposeqcount_cli = temposeqcount.main:main'
         ],
         # if you have a gui, use this
         # 'gui_scripts': [
-        #     'raslpipe_gui = raslpipe.gui:entry_point'
+        #     'temposeqcount_gui = temposeqcount.gui:entry_point'
         # ]
     },
     # These all get copied to our installation's bin folder for us
     scripts = [
-        'raslpipe/lib/fastx_toolkit/bin/fastq_masker',
-        'raslpipe/download/seqtk/seqtk',
-        'raslpipe/download/samtools/samtools',
-        'raslpipe/download/help2man-1.43.3/help2man',
-        'raslpipe/download/graphviz-2.38.0/bin/dot',
-    ] + glob('raslpipe/lib/fastx_toolkit/bin/fast*') +
-        glob('raslpipe/download/libtool-2.4/bin/lib*') +
-        glob('raslpipe/download/texinfo-6.1/bin/*' ) +
-        glob('raslpipe/download/graphviz-2.38.0/bin/*'),
+        'temposeqcount/lib/fastx_toolkit/bin/fastq_masker',
+        'temposeqcount/download/seqtk/seqtk',
+        'temposeqcount/download/samtools/samtools',
+        'temposeqcount/download/help2man-1.43.3/help2man',
+        'temposeqcount/download/graphviz-2.38.0/bin/dot',
+    ] + glob('temposeqcount/lib/fastx_toolkit/bin/fast*') +
+        glob('temposeqcount/download/libtool-2.4/bin/lib*') +
+        glob('temposeqcount/download/texinfo-6.1/bin/*' ) +
+        glob('temposeqcount/download/graphviz-2.38.0/bin/*'),
     package_data = {
-        'raslpipe': ['files/*'],
+        'temposeqcount': ['files/*'],
 
     }
 )

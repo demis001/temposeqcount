@@ -32,7 +32,7 @@ if not on_rtd:
 
 PROJPATH = dirname(dirname(dirname(abspath(__file__))))
 
-from raslpipe import metadata
+from temposeqcount import metadata
 # -- General configuration ----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.

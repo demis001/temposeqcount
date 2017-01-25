@@ -28,76 +28,76 @@ from paver.setuputils import install_distutils_tasks
 
 options(setup=setup_dict,
         star=Bunch(
-        sdir=path('raslpipe/download'),
-        bindir=path('raslpipe/bin')
+        sdir=path('temposeqcount/download'),
+        bindir=path('temposeqcount/bin')
         ),
          FastQC=Bunch(
             url='http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip',
-            downloads=path('raslpipe/download'),
+            downloads=path('temposeqcount/download'),
             installdir=join(sys.prefix,'lib')
         ),
         fastx_lib=Bunch(
             url='https://github.com/agordon/libgtextutils/releases/download/0.7/libgtextutils-0.7.tar.gz',
-            downloads=path('raslpipe/download'),
+            downloads=path('temposeqcount/download'),
             installdir=join(sys.prefix, 'lib', 'libgtextutils')
         ),
         fastx=Bunch(
             url='https://github.com/agordon/fastx_toolkit/releases/download/0.0.14/fastx_toolkit-0.0.14.tar.bz2',
-            downloads=path('raslpipe/download'),
+            downloads=path('temposeqcount/download'),
             installdir=join(sys.prefix, 'lib', 'fastx_toolkit')
 
         ),
         ngsutils=Bunch(
             url='https://github.com/ngsutils/ngsutils/archive/ngsutils-0.5.7.tar.gz',
-            downloads=path('raslpipe/download'),
+            downloads=path('temposeqcount/download'),
 
         ),
         auto_barcode=Bunch(
             url='https://github.com/mfcovington/auto_barcode/archive/2.1.2.tar.gz',
-            downloads=path('raslpipe/download')
+            downloads=path('temposeqcount/download')
 
         ),
         R=Bunch(
             url='https://cran.r-project.org/src/base/R-3/R-3.2.3.tar.gz',
-            downloads=path('raslpipe/download'),
+            downloads=path('temposeqcount/download'),
             installdir=join(sys.prefix, 'lib', "R-3.2.3")
 
         ),
         rpy2=Bunch(
             url='https://pypi.python.org/packages/source/r/rpy2/rpy2-2.7.8.tar.gz',
-            downloads=path('raslpipe/download')
+            downloads=path('temposeqcount/download')
 
         ),
         seqtk=Bunch(
             url='https://github.com/lh3/seqtk.git',
-            downloads=path('raslpipe/download')
+            downloads=path('temposeqcount/download')
 
         ),
         environ=Bunch(
-            installdir=path('raslpipe/lib')
+            installdir=path('temposeqcount/lib')
 
         ),
           settings=Bunch(
-            shell_file=path('raslpipe/files/settings.sh')
+            shell_file=path('temposeqcount/files/settings.sh')
         ),
         samtools=Bunch(
-          sdir=path('raslpipe/download'),
-          bindir=path('raslpipe/bin')
+          sdir=path('temposeqcount/download'),
+          bindir=path('temposeqcount/bin')
         ),
         help2man=Bunch(
-        sdir=path('raslpipe/download'),
+        sdir=path('temposeqcount/download'),
             url='http://ftp.gnu.org/gnu/help2man/help2man-1.43.3.tar.gz',
         ),
         libtool=Bunch(
-        sdir=path('raslpipe/download'),
+        sdir=path('temposeqcount/download'),
         url='http://mirror.easthsia.com/gnu/libtool/libtool-2.4.tar.gz'
         ),
         textinfo=Bunch(
-        sdir=path('raslpipe/download'),
+        sdir=path('temposeqcount/download'),
         url='http://ftp.gnu.org/gnu/texinfo/texinfo-6.1.tar.gz'
         ),
         graphviz=Bunch(
-        sdir=path('raslpipe/download'),
+        sdir=path('temposeqcount/download'),
         url='http://ftp.osuosl.org/pub/blfs/conglomeration/graphviz/graphviz-2.38.0.tar.gz'
         ),
         virtualenv=Bunch(
@@ -107,7 +107,7 @@ options(setup=setup_dict,
 
 INSTRUICTIONS = """
 Run
-    $ source raslpipe/bin/activate
+    $ source temposeqcount/bin/activate
 to enter the virtual environment and
     $ deactivate
 to exit the environment.
@@ -298,7 +298,7 @@ def download_compile_graphviz(options):
         sdir =path(currwd) / options.graphviz.sdir
         info(sdir)
         sh('(cd %s;wget %s -O- | tar xzf -; cd graphviz-2.38.0;./configure --prefix=%s/graphviz-2.38.0;make;make install)' %(sdir,url,sdir))
-#export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/data/jimaprogramming/python/raslpipe/raslpipe/lib/R-3.2.3/lib64/R/lib/
+#export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:~/data/jimaprogramming/python/temposeqcount/temposeqcount/lib/R-3.2.3/lib64/R/lib/
 
 @task
 def insallRpackages(options):
@@ -473,7 +473,7 @@ def install_python_dependencies():
 
     else:
         sh('pip install numpy')
-        sh('pip install -r requirements-dev.txt  --cache-dir raslpipe/download/.pip_cache')
+        sh('pip install -r requirements-dev.txt  --cache-dir temposeqcount/download/.pip_cache')
 
 @task
 def install_python_dependencies_nodeps():
@@ -484,7 +484,7 @@ def install_python_dependencies_nodeps():
         sh('pip install -r requirements_nodeps.txt')
     else:
         sh('pip install numpy')
-        sh('pip install -r requirements_nodeps.txt  --cache-dir raslpipe/download/.pip_cache')
+        sh('pip install -r requirements_nodeps.txt  --cache-dir temposeqcount/download/.pip_cache')
 
 @task
 @needs('install_dependencies')
@@ -546,7 +546,7 @@ def run(args):
     # executable. So we just pass the package name in as the executable name,
     # since it's close enough. This should never be seen by an end user
     # installing through Setuptools anyway.
-    from raslpipe.main import main
+    from temposeqcount.main import main
     raise SystemExit(main([CODE_DIRECTORY] + args))
 
 

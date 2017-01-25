@@ -8,8 +8,8 @@ from pytest import raises
 import pytest
 parametrize = pytest.mark.parametrize
 
-from raslpipe import metadata
-from raslpipe.main import main
+from temposeqcount import metadata
+from temposeqcount.main import main
 
 
 class TestMain(object):

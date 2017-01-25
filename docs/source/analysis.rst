@@ -1,10 +1,10 @@
 ====================
-Running the raslpipe
+Running the temposeqcount
 ====================
 
 .. _activate:
 
-Activating the raslpipe
+Activating the temposeqcount
 =======================
 
 You must always ensure that the virtualenv that you installed into during the
@@ -17,7 +17,7 @@ You need to specify the full path to the activate script such as
 
 .. code-block:: bash
 
-    $> . /path/to/raslpipe/raslpipe/bin/activate
+    $> . /path/to/temposeqcount/temposeqcount/bin/activate
 
 When you ran the :doc:`install` the full path to activate should have been printed
 during step #2
@@ -29,7 +29,7 @@ To get help
 
 .. code-block:: bash
 
-    raslpipe_cli -h 
+    temposeqcount_cli -h 
 
 If your fastq file has a `.fq` extension, make sure to rename to `.fastq` extension.
 The name of the fastq file require the following nameing `SampleName_WellNumber_*.fastq.gz`.
@@ -48,7 +48,7 @@ Typical Usage
 
 .. code-block:: bash
 
-    raslpipe_cli --flowchart outdir_pipeline_stages_to_run.ps -o outdir -f ./testData -p ./testData/160219_tox_3d_manifest.csv 
+    temposeqcount_cli --flowchart outdir_pipeline_stages_to_run.ps -o outdir -f ./testData -p ./testData/160219_tox_3d_manifest.csv 
 
 Manifest csv file (Probe information format)
 -----------------------------------------------

@@ -6,28 +6,28 @@
 function clean_bin() {
     for f in parallel* compare_* STAR fastqc fastx_* filter_* make_* sum* bam* bed* biom* blast* merg* 
     do
-        rm -f raslpipe/bin/${f}
+        rm -f temposeqcount/bin/${f}
     done
 }
 
 # Full clean build and egg
 rm -rf build
-rm -rf raslpipe.egg-info
+rm -rf temposeqcount.egg-info
 
 # Should we uninstall everything or just the pathdiscov package
 # Takes a long time to reinstall numpy/matplotlib
 if [ "$1" == "-full" ]
 then
     # Remove all things that installer touches
-    rm -rf raslpipe/{lib,lib64,include,bin}
-	rm -rf raslpipe/{download}/*
+    rm -rf temposeqcount/{lib,lib64,include,bin}
+	rm -rf temposeqcount/{download}/*
     # Replace download from git
-    #git checkout raslpipe/download
+    #git checkout temposeqcount/download
 else
     # Use pip to uninstall(If multiple version, may need to call more than once)
     # Ensure activated
-    . raslpipe/bin/activate
-    while pip uninstall -y raslpipe; do sleep 1; done;
+    . temposeqcount/bin/activate
+    while pip uninstall -y temposeqcount; do sleep 1; done;
     clean_bin
 fi
 

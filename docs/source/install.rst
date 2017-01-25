@@ -51,13 +51,13 @@ Installation
 
     .. code-block:: bash
 
-        #wget https://github.com/demis001/raslpipe/archive/v1.2-alpha.tar.gz -O- | tar xzf -
-        git clone https://github.com/demis001/raslpipe.git
+        #wget https://github.com/demis001/temposeqcount/archive/v1.2-alpha.tar.gz -O- | tar xzf -
+        git clone https://github.com/demis001/temposeqcount.git
         
     .. code-block:: bash
     
-        #cd raslpipe-1.2-alpha
-        cd raslpipe
+        #cd temposeqcount-1.2-alpha
+        cd temposeqcount
 
 
 #. Setup a `virtualenv <activate>` to install into and build documentation
@@ -67,13 +67,13 @@ Installation
         .. code-block:: bash
 
             wget https://pypi.python.org/packages/d4/0c/9840c08189e030873387a73b90ada981885010dd9aea134d6de30cd24cb8/virtualenv-15.1.0.tar.gz#md5=44e19f4134906fe2d75124427dc9b716 -O- | tar xzf -
-            python virtualenv-15.1.0/virtualenv.py raslpipe
+            python virtualenv-15.1.0/virtualenv.py temposeqcount
 
     #. Activate the virtualenv to install everything into
 
         .. code-block:: bash
 
-            source raslpipe/bin/activate
+            source temposeqcount/bin/activate
             pip install paver sphinx_rtd_theme
 
     #. If you want to view/install the built html documentation (Optional)
@@ -88,9 +88,9 @@ Installation
         .. code-block:: bash
 
             paver doc_man
-            mkdir -p raslpipe/man/man1
-            cp docs/build/man/* raslpipe/man/man1
-            man raslpipe
+            mkdir -p temposeqcount/man/man1
+            cp docs/build/man/* temposeqcount/man/man1
+            man temposeqcount
 
 #. Install the pipeline into the virtualenv
 
@@ -105,7 +105,7 @@ Installation
         .. code-block:: bash
 
             # These should now all be in your path so should work
-            apps=( STAR samtools fastqc seqtk dot raslpipe_cli)
+            apps=( STAR samtools fastqc seqtk dot temposeqcount_cli)
             for p in ${apps[@]}; do $p --help 2>&1 | grep -qiE '\[main\]|usage|useage|qualifiers|DESCRIPTION|Syntax' && echo "$p ok" || echo "$p broken?"; done
 
 
@@ -113,13 +113,13 @@ Installation
 #. Optional: Run a test dataset
 
     Anytime you run the pipeline you need to activate the pipeline first. If the pipeline is activated you will see 
-    ```(raslpipe)``` in front of your prompt.
+    ```(temposeqcount)``` in front of your prompt.
     
     If it is not activated:
 
     .. code-block:: bash
  
-         source ~/raslpipe/raslpipe/bin/activate 
+         source ~/temposeqcount/temposeqcount/bin/activate 
 
     Inputs:
 
@@ -131,13 +131,13 @@ Installation
     .. code-block:: bash
 
         # get detail help using 
-        raslpipe -h
+        temposeqcount -h
 
     Run test data and inspect the result folder:
 
     .. code-block:: bash
 
-        raslpipe_cli --flowchart outdir_pipeline_stages_to_run.ps -o outdir -f ./testData -p ./testData/160219_tox_3d_manifest.csv
+        temposeqcount_cli --flowchart outdir_pipeline_stages_to_run.ps -o outdir -f ./testData -p ./testData/160219_tox_3d_manifest.csv
         
 
 #. The END

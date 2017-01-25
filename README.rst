@@ -1,12 +1,12 @@
 =========================
-raslpipe
+temposeqcount
 =========================
 
 
-.. image:: https://travis-ci.org/demis001/raslpipe.png
-   :target: https://travis-ci.org/demis001/raslpipe
+.. image:: https://travis-ci.org/demis001/temposeqcount.png
+   :target: https://travis-ci.org/demis001/temposeqcount
 
-`raslpipe` is analysis pipeline for TempO-Seq/RASL-Seq project that utilizes all next-generation  sequencing platforms such as RADSeq. TempO-Seq allow targeted sequencing to high-throughput sample  processing with the use of templates-dependent oligo ligation on 384 well plate. Knowing the number of reads mapped to the probes per well is the first step in the analysis. The application accept demultiplexed fastq folder and the manifest csv file that has probes and sample information to quantify the reads mapped to the probe per well in parallel.
+`temposeqcount` is analysis pipeline for TempO-Seq/RASL-Seq project that utilizes all next-generation  sequencing platforms such as RADSeq. TempO-Seq allow targeted sequencing to high-throughput sample  processing with the use of templates-dependent oligo ligation on 384 well plate. Knowing the number of reads mapped to the probes per well is the first step in the analysis. The application accept demultiplexed fastq folder and the manifest csv file that has probes and sample information to quantify the reads mapped to the probe per well in parallel.
 
 The project attempt to streamline the analysis with all its dependencies handled.
 
@@ -49,7 +49,7 @@ Application routine template
 Licenses
 ========
 
-The code that makes raslpipe is licensed under the GPL license. Feel free to use it in your free software/open-source.
+The code that makes temposeqcount is licensed under the GPL license. Feel free to use it in your free software/open-source.
 
 
 Issues

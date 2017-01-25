@@ -7,5 +7,5 @@ Table of Contents:
 .. toctree::
     :maxdepth: 2
 
-    raslpipe_cli
+    temposeqcount_cli
     uninstall
