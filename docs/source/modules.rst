@@ -1,7 +1,7 @@
-raslpipe
+temposeqcount
 ==========
 
 .. toctree::
    :maxdepth: 4
 
-   scripts/raslpipe_cli
+   scripts/temposeqcount_cli
