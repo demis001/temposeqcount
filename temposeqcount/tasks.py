@@ -383,9 +383,9 @@ def combineAlignmentSummary(input_file_names, output_file):
     dfs = []
     for filename in input_file_names:
         fileN = os.path.basename(filename)
-        #records = fileN.split("_")
+        records = fileN.split(".")
         #sampleName = records[0] + "_" + records[1] #A11C_S22
-        ids = fileN
+        ids = records[0]
         summary = ids
         df = pd.read_table(filename, sep= '\t', names=["category",summary]).set_index("category")
         dfs.append(df)
