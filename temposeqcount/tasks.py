@@ -135,21 +135,21 @@ def index_db_file(input, output, cpuNum, gtfFile):
     cmds += " 2>&1 | tee -a " + output + "/index_STAR_genomeFile.log"
     runCommand(cmds, True)
     return
-def index_db_file_kallisto(input,output, cpuNum, gtfFile):
-    """TODO: Docstring for index_db_file_kallisto.
-    :returns: TODO
+#def index_db_file_kallisto(input,output, cpuNum, gtfFile):
+    #"""TODO: Docstring for index_db_file_kallisto.
+    #:returns: TODO
 
-    """
-    cmds = [
-        'kallisto index',
-        '-i', input,
-        '-k  13',
+    #"""
+    #cmds = [
+        #'kallisto index',
+        #'-i', input,
+        #'-k  13',
 
-    ]
-    cmds= ' '.join(cmds)
-    cmds += " 2>&1 | tee -a " + output + "/index_kallisto_genome_file.log"
-    runCommand(cmds, True)
-    return
+    #]
+    #cmds= ' '.join(cmds)
+    #cmds += " 2>&1 | tee -a " + output + "/index_kallisto_genome_file.log"
+    #runCommand(cmds, True)
+    #return
 
 
 def prepare_barcode_file(barcodeFile, outFile):
