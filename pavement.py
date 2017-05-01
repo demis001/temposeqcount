@@ -73,11 +73,6 @@ options(setup=setup_dict,
             downloads=path('temposeqcount/download')
 
         ),
-        kallisto=Bunch(
-            url='https://github.com/pachterlab/kallisto.git',
-            downloads = path('temposeqcount/download')
-
-        ),
         environ=Bunch(
             installdir=path('temposeqcount/lib')
 
@@ -173,20 +168,6 @@ def download_compile_seqtk(options):
             sh('cd %s ; cd seqtk;make' %(options.seqtk.downloads))
         else:
             sh('cd %s ;git clone %s ; cd seqtk ; make' %(options.seqtk.downloads, options.seqtk.url))
-
-@task
-def download_compile_kallisto(options):
-    """Downlaod and compile Kallisto.
-    :returns: void
-
-    """
-    appbin=join(sys.prefix, 'bin', 'kallisto')
-    srcdir = abspath(join(options.kallisto.downloads, 'kallisto'))
-    if not exists(appbin):
-        if exists(srcdir):
-            sh('cd %s; mkdir -p build; cd build; cmake %s; make' %(srcdir,srcdir))
-        else:
-            sh('cd %s; git clone %s; cd kallisto; mkdir -p build; cd build; cmake %s; make' %(options.kallisto.downloads, options.kallisto.url,srcdir))
 
 @task
 def download_compile_samtools(options):
@@ -484,7 +465,7 @@ def install_dependencies():
 
 @task
 #@needs('download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'in)
-@needs('make_download_dir','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_kallisto','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_help2man', 'download_compile_textinfo','download_compile_libtool','download_compile_graphviz')
+@needs('make_download_dir','download_compile_star', 'download_install_fastqc', 'download_compile_seqtk','download_compile_samtools','install_fastax_lib', 'install_fastx', 'download_compile_help2man', 'download_compile_textinfo','download_compile_libtool','download_compile_graphviz')
 def install_other_dependencies():
     pass
 
