@@ -19,7 +19,7 @@ CentOS
     #> yum install git python-sphinx.noarch g++ ghostscript python-devel zlib-devel ncurses-devel freetype-devel libjpeg-turbo-utils.x86_64 libjpeg-turbo-devel.x86_64  libjpeg-turbo-static.x86_64 libpng-devel wget java-1.6.0 dejavu*
     #> yum groupinstall Development Tools
     #> yum install blas-devel.x86_64 blas-static.x86_64  blas.x86_64   blas64.x86_64 lapack-devel.x86_64 lapack-static.x86_64  lapack.x86_64 lapack64.x86_64
-    
+    #> yum bzip2.x86_64 bzip2-libs.x86_64  bzip2-devel.x86_64 perl-ExtUtils-Embed
 Ubuntu 14.04
 ------------
 
