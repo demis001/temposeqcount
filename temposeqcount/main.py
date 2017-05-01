@@ -111,12 +111,11 @@ def indexGenomeFile(input, output):
     #print output
     base =  splitext(input)[0]
     base = base + ".gtf"
-    print base
+    #print base
     gtfFile = base
     outputDir = proDir + "/result/Genome"
     print colored("Stage 4: Creating genome index file from the probe fasta file ....", "green")
     print input
-    #print output
     #print cpuNum
     result = tasks.index_db_file(input, outputDir, cpuNum, gtfFile)
     return result
@@ -136,10 +135,10 @@ def map_to_probes(fastq, output):
     outPrefix = os.path.abspath(suf)
     print tasks.comment()
     print colored("Stage 5: Map sequence fastq file to the indexed genome file ... ", "green")
-    print fastq
-    print output
-    print genomeDir
-    print outPrefix
+    #print fastq
+    #print output
+    #print genomeDir
+    #print outPrefix
     print tasks.comment()
     result = tasks.map_seq_to_probes(fastq, genomeDir, cpuNum, outPrefix)
     return result
@@ -158,8 +157,8 @@ def count_mapped_reads(bamFile, outfile):
     gtfFile = join(resultDir,gtfF)
     print tasks.comment()
     print colored("Stage 6: Count Mapped file that overlap with genome feature ... ", "green")
-    print bamFile
-    print gtfFile
+    #print bamFile
+    #print gtfFile
     print tasks.comment()
     result = tasks.count_mapped(bamFile, outfile, gtfFile)
     return result
@@ -193,15 +192,14 @@ def combine_count_data(input, output):
     `output`: A single summary count csv file nammed 'DATA_COUNT_countcombined.csv' under project dir
     """
     print tasks.comment()
-    print input
-    print output
+    #print input
+    #print output
     print colored("Stage 7: Combining count data ...", "green")
     print tasks.comment()
     result = tasks.combineCount(input, output)
     return result
 
 @graphviz(height=1.8, width=2, label="Format\ncount data")
-@follows(combine_count_data)
 @follows(combine_count_data)
 @transform(combine_count_data, suffix(".csv"), "_formated.csv")
 def format_count(input,output):
@@ -211,8 +209,8 @@ def format_count(input,output):
     """
     print tasks.comment()
     print colored("Stage 8: Formatting count file ... ", "green")
-    print input
-    print output
+    #print input
+    #print output
     print tasks.comment()
     result = tasks.formatCount(input,output)
     return result

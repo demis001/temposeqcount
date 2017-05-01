@@ -135,6 +135,23 @@ def index_db_file(input, output, cpuNum, gtfFile):
     cmds += " 2>&1 | tee -a " + output + "/index_STAR_genomeFile.log"
     runCommand(cmds, True)
     return
+def index_db_file_kallisto(input,output, cpuNum, gtfFile):
+    """TODO: Docstring for index_db_file_kallisto.
+    :returns: TODO
+
+    """
+    cmds = [
+        'kallisto index',
+        '-i', input,
+        '-k  13',
+
+    ]
+    cmds= ' '.join(cmds)
+    cmds += " 2>&1 | tee -a " + output + "/index_kallisto_genome_file.log"
+    runCommand(cmds, True)
+    return
+
+
 def prepare_barcode_file(barcodeFile, outFile):
     """docstring for prepare_bar_code_file"""
     with open(barcodeFile, 'r') as inFile, open(outFile[0], 'w') as plate, open(outFile[1], 'w') as wall:
@@ -302,9 +319,9 @@ def combineCount(input_file_names, output_file):
     dfs = []
     for filename in input_file_names:
         fileN = os.path.basename(filename)
-        records = fileN.split("_")
-        sampleName = records[0] + "_" + records[1] + "_" + records[2] #A11C_S22_L001
-        ids = sampleName
+        #records = fileN.split("_")
+        #sampleName = records[0] + "_" + records[1] + "_" + records[2] #A11C_S22_L001
+        ids = fileN
         count = ids
         df = pd.read_table(filename, sep= '\t', names=["Genes",count]).set_index("Genes")
         dfs.append(df)
@@ -366,9 +383,9 @@ def combineAlignmentSummary(input_file_names, output_file):
     dfs = []
     for filename in input_file_names:
         fileN = os.path.basename(filename)
-        records = fileN.split("_")
-        sampleName = records[0] + "_" + records[1] #A11C_S22
-        ids = sampleName
+        #records = fileN.split("_")
+        #sampleName = records[0] + "_" + records[1] #A11C_S22
+        ids = fileN
         summary = ids
         df = pd.read_table(filename, sep= '\t', names=["category",summary]).set_index("category")
         dfs.append(df)
@@ -404,8 +421,10 @@ def plotAlignmentStat(input,output):
     #ggplot(aes(x="x", weight="y"), df) + geom_bar()
     #ggplot(diamonds, aes(x='price', fill='cut')) + geom_histogram() +  theme_bw() + scale_color_brewer(type='qual')
 
-    from ggplot import ggplot,geom_bar,aes,theme_bw,ggtitle,scale_y_continuous,coord_flip
-    p = ggplot(dfm, aes(x='sampleName', weight='Value', fill='category')) + geom_bar(position = "stack") + theme_bw() + ggtitle("Alignment Summary") + scale_y_continuous(labels='comma') + coord_flip()
+    from ggplot import ggplot,geom_bar,aes,theme_bw,ggtitle, coord_flip, geom_histogram #,scale_y_continuous,coord_flip
+    p = ggplot(dfm, aes(x='sampleName', weight='Value', fill='category')) + geom_bar() + theme_bw() + ggtitle("Alignment Summary stats")  + coord_flip() # + scale_y_continuous(labels='comma
+
+    #p = ggplot(dfm, aes(x='sampleName', weight='Value', fill='category')) + geom_bar(position = "stack", stat='identity') + theme_bw() + ggtitle("Alignment Summary stats")  + coord_flip()# + scale_y_continuous(labels='comma') + coord_flip()
     #p = ggplot(df, aes(x = "category", y = "value", fill = "variable")) + \
         #geom_bar(stat="bar", labels=df["category"].tolist()) + \
         #theme(axis_text_x = element_text(angle=90))

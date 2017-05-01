@@ -282,6 +282,7 @@ setup_dict = dict(
         'temposeqcount/download/samtools/samtools',
         'temposeqcount/download/help2man-1.43.3/help2man',
         'temposeqcount/download/graphviz-2.41.20170103.1755/bin/dot',
+        'temposeqcount/download/kallisto/build/src/kallisto',
     ] + glob('temposeqcount/lib/fastx_toolkit/bin/fast*') +
         glob('temposeqcount/download/libtool-2.4/bin/lib*') +
         glob('temposeqcount/download/texinfo-6.1/bin/*' ) +
