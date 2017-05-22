@@ -22,6 +22,7 @@ install:
 	python ./virtualenv-15.1.0/virtualenv.py temposeqcount && \
 	. temposeqcount/bin/activate && \
 	pip install -U Paver sphinx_rtd_theme && \
+	pip install git+https://github.com/yhat/ggplot.git && \
 	python setup.py install
 docs:
 	paver doc_html && \

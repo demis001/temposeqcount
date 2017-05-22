@@ -40,5 +40,5 @@ sphinx_rtd_theme
 image
 HTSeq
 PySam
-ggplot
+#ggplot
 #git+https://github.com/yhat/ggplot
