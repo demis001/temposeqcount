@@ -297,7 +297,7 @@ def main():
     pipeline_printout_graph('summary_pipeline_stages_to_run.ps', 'ps', tasks_torun, user_colour_scheme={"colour_scheme_index": 6},
                             no_key_legend=False, pipeline_name="TempO-seq Analysis", size=(11, 8), dpi = 30,
                             forcedtorun_tasks = [indexGenomeFile, combine_count_data],draw_vertically=True, ignore_upstream_of_target=False)
-    pipeline_run(["prepare_analysis", "prepareDB_file",'create_gtf_file', 'indexGenomeFile', 'map_to_probes','count_mapped_reads', 'combine_count_data', 'format_count', 'alignment_summary','combine_alignment_summary','plot_alignment_summary'],verbose = 1, multiprocess = cpuNum)
+    pipeline_run(["prepare_analysis", "prepareDB_file",'create_gtf_file', 'indexGenomeFile', 'map_to_probes','count_mapped_reads', 'combine_count_data', 'format_count', 'alignment_summary','combine_alignment_summary'],verbose = 1, multiprocess = cpuNum)
     print "....................." + resultDir
     tasks.comment()
     psfile = options.flowchart
