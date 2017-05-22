@@ -267,7 +267,7 @@ def map_seq_to_probes(fastq, genomeDir, numCPU, outPrefix):
         '--scoreInsOpen -10000',
         '--outFilterMismatchNmax 2',
         '--outSAMunmapped Within',
-        '--outSAMattributes AS nM',
+        '--outSAMattributes NH HI AS nM',
         ' --genomeLoad NoSharedMemory',
     ]
     cmds = '  '.join(cmds)
