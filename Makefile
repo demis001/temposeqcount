@@ -14,6 +14,11 @@ clean:
 	rm --force --recursive build/
 	rm --force --recursive dist/
 	rm --force --recursive *.egg-info
+	unlink temposeqcount/lib64
+	rm --force --recursive temposeqcount/bin/
+    rm --force --recursive temposeqcount/lib
+    rm --force --recursive temposeqcount/include
+
 
 lint:
 	flake8 --exclude=.tox
