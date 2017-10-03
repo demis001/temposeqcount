@@ -15,20 +15,18 @@ clean:
 	rm --force --recursive dist/
 	rm --force --recursive *.egg-info
 	unlink temposeqcount/lib64
-	rm --force --recursive temposeqcount/bin/
-    rm --force --recursive temposeqcount/lib
-    rm --force --recursive temposeqcount/include
-
+	rm --force --recursive temposeqcount/bin
+	rm --force --recursive temposeqcount/lib
+	rm --force --recursive temposeqcount/include
 
 lint:
 	flake8 --exclude=.tox
 
 install:
 	pip install virtualenv --user && \
-	python virtualenv temposeqcount && \
+	python ./virtualenv-15.1.0/virtualenv.py temposeqcount && \
 	. temposeqcount/bin/activate && \
-	pip install -U Paver sphinx_rtd_theme && \
-	pip install git+https://github.com/yhat/ggplot.git && \
+	pip install -U  Paver sphinx_rtd_theme && \
 	python setup.py install
 docs:
 	paver doc_html && \
