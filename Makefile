@@ -14,7 +14,6 @@ clean:
 	rm --force --recursive build/
 	rm --force --recursive dist/
 	rm --force --recursive *.egg-info
-	unlink temposeqcount/lib64
 	rm --force --recursive temposeqcount/bin
 	rm --force --recursive temposeqcount/lib
 	rm --force --recursive temposeqcount/include
@@ -24,7 +23,7 @@ lint:
 
 install:
 	pip install virtualenv --user && \
-	python ./virtualenv-15.1.0/virtualenv.py temposeqcount && \
+	virtualenv temposeqcount && \
 	. temposeqcount/bin/activate && \
 	pip install -U  Paver sphinx_rtd_theme && \
 	python setup.py install
