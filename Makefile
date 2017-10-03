@@ -24,6 +24,7 @@ lint:
 	flake8 --exclude=.tox
 
 install:
+	pip install virtualenv --user && \
 	python virtualenv temposeqcount && \
 	. temposeqcount/bin/activate && \
 	pip install -U Paver sphinx_rtd_theme && \
