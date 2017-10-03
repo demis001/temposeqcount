@@ -24,7 +24,7 @@ lint:
 	flake8 --exclude=.tox
 
 install:
-	python ./virtualenv-15.1.0/virtualenv.py temposeqcount && \
+	python virtualenv temposeqcount && \
 	. temposeqcount/bin/activate && \
 	pip install -U Paver sphinx_rtd_theme && \
 	pip install git+https://github.com/yhat/ggplot.git && \
