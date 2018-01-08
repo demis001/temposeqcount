@@ -36,8 +36,8 @@ pandas
 #biopython
 #pysam
 #graphviz
-sphinx_rtd_theme
-image
+#sphinx_rtd_theme
+#image
 HTSeq
 PySam
 #ggplot
