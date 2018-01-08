@@ -20,6 +20,7 @@ CentOS
     #> yum groupinstall Development Tools
     #> yum install blas-devel.x86_64 blas-static.x86_64  blas.x86_64   blas64.x86_64 lapack-devel.x86_64 lapack-static.x86_64  lapack.x86_64 lapack64.x86_64
     #> yum bzip2.x86_64 bzip2-libs.x86_64  bzip2-devel.x86_64 perl-ExtUtils-Embed
+
 Ubuntu 14.04
 ------------
 
@@ -41,6 +42,7 @@ Ubuntu 16.04 LTS (Xenial Xerus)
 -------------------------------
 
 .. code-block:: bash
+
    #> sudo apt-get update
    #> sudo apt-get install python-dev g++ libjpeg-dev pkg-config ghostscript git gfortran zlib1g-dev build-essential libopenblas-base libopenblas-dev liblapack-dev python-sphinx libncurses5  libncurses5-dev libpng12-dev libfreetype6-dev
 
