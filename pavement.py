@@ -90,7 +90,7 @@ options(setup=setup_dict,
         ),
         libtool=Bunch(
         sdir=path('temposeqcount/download'),
-        url='http://mirror.easthsia.com/gnu/libtool/libtool-2.4.tar.gz'
+            url='https://github.com/Distrotech/libtool/archive/v2.4.tar.gz'
         ),
         textinfo=Bunch(
         sdir=path('temposeqcount/download'),
@@ -288,7 +288,7 @@ def download_compile_libtool(options):
         sdir = path(currwd)  / options.libtool.sdir
         url = options.libtool.url
         info(sdir)
-        sh('(cd %s; wget %s; tar -xzvf libtool-2.4.tar.gz;cd libtool-2.4;./configure CC="cc" --prefix=%s/libtool-2.4;make;make install)' %(sdir,url, sdir))
+        sh('(cd %s; wget %s; tar -xzvf v2.4.tar.gz;cd libtool-2.4;./configure CC="cc" --prefix=%s/libtool-2.4;make;make install)' %(sdir,url, sdir))
 
 @task
 #@needs('download_compile_libtool')
