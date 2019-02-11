@@ -2,6 +2,7 @@
 temposeqcount
 =========================
 
+*temposeqcount*, please add a reference of this paper if use in some form https://www.ncbi.nlm.nih.gov/pubmed/29163636
 
 .. image:: https://travis-ci.org/demis001/temposeqcount.png
    :target: https://travis-ci.org/demis001/temposeqcount
@@ -31,6 +32,8 @@ Changelog
 ---------
 
 See `Changelog <CHANGELOG.rst>`_
+
+Acknole
    
 Supported Python Versions
 -------------------------
